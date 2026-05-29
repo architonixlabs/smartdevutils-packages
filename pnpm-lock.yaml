@@ -139,6 +139,9 @@ importers:
 
   packages/react:
     dependencies:
+      '@smartdevutils/browser':
+        specifier: workspace:*
+        version: link:../browser
       '@smartdevutils/core':
         specifier: workspace:*
         version: link:../core
