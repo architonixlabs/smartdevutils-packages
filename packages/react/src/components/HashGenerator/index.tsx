@@ -25,6 +25,8 @@ export function HashGenerator({
   const [input, setInput] = useState(defaultInput)
   const [error, setError] = useState('')
 
+  // One-time initialization — defaultAlgorithm/defaultInput are treated as initial values
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setAlgorithm(defaultAlgorithm)
     if (defaultInput) compute(defaultInput, defaultAlgorithm)
@@ -34,8 +36,8 @@ export function HashGenerator({
     setInput(value)
     setError('')
     try {
-      compute(value, algorithm)
-      if (onResult && value) onResult(hash, algorithm)
+      const computed = compute(value, algorithm)
+      if (onResult && value) onResult(computed, algorithm)
     } catch {
       setError('Failed to compute hash')
     }
@@ -44,8 +46,8 @@ export function HashGenerator({
   const handleAlgorithm = (algo: HashAlgorithm) => {
     setAlgorithm(algo)
     if (input) {
-      compute(input, algo)
-      if (onResult) onResult(hash, algo)
+      const computed = compute(input, algo)
+      if (onResult) onResult(computed, algo)
     }
   }
 
