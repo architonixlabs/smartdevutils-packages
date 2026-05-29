@@ -1,7 +1,14 @@
 node_modules/
 dist/
+out/
 .turbo/
+**/.vite/
 coverage/
 *.tsbuildinfo
+*.log
+pnpm-debug.log*
+.env
+.env.local
+.env.*.local
 .changeset/*.md
 !.changeset/config.json
