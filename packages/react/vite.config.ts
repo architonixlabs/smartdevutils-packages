@@ -17,7 +17,7 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@smartdevutils/core'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@smartdevutils/core', '@smartdevutils/browser'],
       output: {
         globals: {
           react: 'React',

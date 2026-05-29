@@ -26,6 +26,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@smartdevutils/browser": "workspace:*",
     "@smartdevutils/core": "workspace:*",
     "qrcode": "^1.5.4"
   },
