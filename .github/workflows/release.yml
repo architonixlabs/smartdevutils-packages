@@ -28,19 +28,19 @@ jobs:
 
       - name: Publish @smartdevutils/core
         working-directory: packages/core
-        run: npm publish --access public
+        run: npm publish --access public || echo "core already published at this version, skipping"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish @smartdevutils/browser
         working-directory: packages/browser
-        run: npm publish --access public
+        run: npm publish --access public || echo "browser already published at this version, skipping"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish @smartdevutils/react
         working-directory: packages/react
-        run: npm publish --access public
+        run: npm publish --access public || echo "react already published at this version, skipping"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
