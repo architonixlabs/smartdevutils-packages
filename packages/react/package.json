@@ -1,6 +1,6 @@
 {
   "name": "@smartdevutils/react",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React component library for SmartDevUtils tools — drop-in UI panels for hashing, encoding, formatting, and more.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -18,7 +18,9 @@
       "types": "./dist/hooks/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
@@ -50,7 +52,13 @@
     "vite-plugin-dts": "^4.0.0",
     "vitest": "^2.0.0"
   },
-  "keywords": ["smartdevutils", "react", "components", "developer-tools", "tailwind"],
+  "keywords": [
+    "smartdevutils",
+    "react",
+    "components",
+    "developer-tools",
+    "tailwind"
+  ],
   "author": "ArchitonixLabs",
   "license": "MIT",
   "repository": {
