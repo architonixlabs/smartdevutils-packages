@@ -32,6 +32,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Publish @smartdevutils/browser
+        working-directory: packages/browser
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Publish @smartdevutils/react
         working-directory: packages/react
         run: npm publish --access public
