@@ -4,8 +4,9 @@ import dts from 'vite-plugin-dts'
 
 const modules = [
   'encoding', 'formatting', 'hashing', 'generation', 'text',
-  'formats', 'jwt', 'dba', 'devops', 'aiml', 'security-extra',
+  'formats', 'jwt', 'dba', 'devops', 'aiml', 'security',
   'database', 'devops-tools', 'aiml-tools', 'planning',
+  'color', 'network', 'data', 'text-extra', 'developer', 'security-extra2',
 ]
 
 export default defineConfig({

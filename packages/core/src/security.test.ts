@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { scanForSecrets, hmacSha256, sha384, base64UrlDecode } from './security-extra';
+import { scanForSecrets, hmacSha256, sha384, base64UrlDecode } from './security';
 
 describe('scanForSecrets', () => {
   it('detects AWS access key', () => {
