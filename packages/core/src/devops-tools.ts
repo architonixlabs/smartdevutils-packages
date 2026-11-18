@@ -1,7 +1,15 @@
+import { dumpYaml } from './yaml';
+
 export interface CicdConfig {
   language: 'node' | 'python' | 'go' | 'java' | 'dotnet' | 'rust';
   platform: 'github-actions' | 'gitlab-ci' | 'circleci' | 'azure-pipelines';
   steps: ('install' | 'test' | 'lint' | 'build' | 'docker' | 'deploy')[];
+  /** Image name for the docker step (default "app"). */
+  imageName?: string;
+  /** Command run by the deploy step (default: an echo placeholder). */
+  deployCommand?: string;
+  /** Branch that triggers CI and gates deploy (default "main"). */
+  branch?: string;
 }
 
 export interface DockerImageResult {
@@ -23,38 +31,147 @@ export interface K8sValidationResult {
   warnings: string[];
 }
 
-const INSTALL_CMDS: Record<string, string> = {
+type CicdLanguage = CicdConfig['language'];
+type CicdStep = CicdConfig['steps'][number];
+
+const INSTALL_CMDS: Record<CicdLanguage, string> = {
   node: 'npm install', python: 'pip install -r requirements.txt',
-  go: 'go mod download', java: 'mvn install -DskipTests',
-  dotnet: 'dotnet restore', rust: 'cargo build',
+  go: 'go mod download', java: 'mvn -B install -DskipTests',
+  dotnet: 'dotnet restore', rust: 'cargo fetch',
 };
-const TEST_CMDS: Record<string, string> = {
+const LINT_CMDS: Record<CicdLanguage, string> = {
+  node: 'npm run lint', python: 'pip install ruff && ruff check .',
+  go: 'go vet ./...', java: 'mvn -B checkstyle:check',
+  dotnet: 'dotnet format --verify-no-changes',
+  rust: 'rustup component add clippy rustfmt && cargo fmt --check && cargo clippy -- -D warnings',
+};
+const TEST_CMDS: Record<CicdLanguage, string> = {
   node: 'npm test', python: 'pytest', go: 'go test ./...',
-  java: 'mvn test', dotnet: 'dotnet test', rust: 'cargo test',
+  java: 'mvn -B test', dotnet: 'dotnet test', rust: 'cargo test',
 };
-const BUILD_CMDS: Record<string, string> = {
-  node: 'npm run build', python: 'python -m build', go: 'go build ./...',
-  java: 'mvn package', dotnet: 'dotnet build --configuration Release', rust: 'cargo build --release',
+const BUILD_CMDS: Record<CicdLanguage, string> = {
+  node: 'npm run build', python: 'pip install build && python -m build', go: 'go build ./...',
+  java: 'mvn -B package', dotnet: 'dotnet build --configuration Release', rust: 'cargo build --release',
+};
+const BUILD_STEP_DEFS: Record<'install' | 'lint' | 'test' | 'build', [string, Record<CicdLanguage, string>]> = {
+  install: ['Install dependencies', INSTALL_CMDS],
+  lint: ['Lint', LINT_CMDS],
+  test: ['Test', TEST_CMDS],
+  build: ['Build', BUILD_CMDS],
 };
 
+const GITHUB_SETUP: Record<CicdLanguage, Record<string, unknown>> = {
+  node: { name: 'Set up Node.js', uses: 'actions/setup-node@v4', with: { 'node-version': '20' } },
+  python: { name: 'Set up Python', uses: 'actions/setup-python@v5', with: { 'python-version': '3.12' } },
+  go: { name: 'Set up Go', uses: 'actions/setup-go@v5', with: { 'go-version': 'stable' } },
+  java: { name: 'Set up JDK', uses: 'actions/setup-java@v4', with: { distribution: 'temurin', 'java-version': '21' } },
+  dotnet: { name: 'Set up .NET', uses: 'actions/setup-dotnet@v4', with: { 'dotnet-version': '8.0.x' } },
+  rust: { name: 'Set up Rust', uses: 'dtolnay/rust-toolchain@stable' },
+};
+const GITLAB_IMAGES: Record<CicdLanguage, string> = {
+  node: 'node:20', python: 'python:3.12', go: 'golang:1.22', java: 'maven:3.9-eclipse-temurin-21',
+  dotnet: 'mcr.microsoft.com/dotnet/sdk:8.0', rust: 'rust:1',
+};
+const CIRCLE_IMAGES: Record<CicdLanguage, string> = {
+  node: 'cimg/node:20.11', python: 'cimg/python:3.12', go: 'cimg/go:1.22', java: 'cimg/openjdk:21.0',
+  dotnet: 'mcr.microsoft.com/dotnet/sdk:8.0', rust: 'cimg/rust:1.77',
+};
+const AZURE_SETUP: Record<CicdLanguage, Record<string, unknown>> = {
+  node: { task: 'UseNode@1', inputs: { version: '20.x' }, displayName: 'Set up Node.js' },
+  python: { task: 'UsePythonVersion@0', inputs: { versionSpec: '3.12' }, displayName: 'Set up Python' },
+  go: { task: 'GoTool@0', inputs: { version: '1.22.5' }, displayName: 'Set up Go' },
+  java: { task: 'JavaToolInstaller@0', inputs: { versionSpec: '21', jdkArchitectureOption: 'x64', jdkSourceOption: 'PreInstalled' }, displayName: 'Set up JDK' },
+  dotnet: { task: 'UseDotNet@2', inputs: { packageType: 'sdk', version: '8.0.x' }, displayName: 'Set up .NET' },
+  rust: { script: 'rustup default stable', displayName: 'Set up Rust' },
+};
+
+const DEFAULT_DEPLOY_CMD = 'echo "Placeholder: replace with your deploy command (CicdConfig.deployCommand)"';
+
+/**
+ * Generates a CI pipeline as YAML (serialised with js-yaml, so the output always parses).
+ * install/lint/test/build run in canonical order in one build job; docker builds an image tagged
+ * with the commit SHA; deploy runs as a separate job/step gated on `branch` (default "main").
+ */
 export function generateCicdPipeline(config: CicdConfig): string {
-  const stepCmds = config.steps.map(s => {
-    if (s === 'install') return INSTALL_CMDS[config.language] ?? '';
-    if (s === 'test') return TEST_CMDS[config.language] ?? '';
-    if (s === 'build') return BUILD_CMDS[config.language] ?? '';
-    return s;
-  }).filter(Boolean);
+  const lang = config.language;
+  const branch = config.branch ?? 'main';
+  const image = config.imageName ?? 'app';
+  const deployCmd = config.deployCommand ?? DEFAULT_DEPLOY_CMD;
+  const wanted = new Set<CicdStep>(config.steps);
+  const buildSteps = (['install', 'lint', 'test', 'build'] as const)
+    .filter(s => wanted.has(s))
+    .map(s => ({ name: BUILD_STEP_DEFS[s][0], cmd: BUILD_STEP_DEFS[s][1][lang] }));
+  const docker = wanted.has('docker');
+  const deploy = wanted.has('deploy');
+  const dump = (doc: unknown) => dumpYaml(doc, { lineWidth: -1, noRefs: true });
 
   if (config.platform === 'github-actions') {
-    return `name: CI\non:\n  push:\n    branches: [main]\n  pull_request:\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n${stepCmds.map(c => `      - run: ${c}`).join('\n')}`;
+    const steps: Record<string, unknown>[] = [
+      { uses: 'actions/checkout@v4' },
+      GITHUB_SETUP[lang],
+      ...buildSteps.map(s => ({ name: s.name, run: s.cmd })),
+    ];
+    if (docker) steps.push({ name: 'Build Docker image', run: `docker build -t ${image}:\${{ github.sha }} .` });
+    const jobs: Record<string, unknown> = { build: { 'runs-on': 'ubuntu-latest', steps } };
+    if (deploy) {
+      jobs['deploy'] = {
+        needs: 'build',
+        if: `github.event_name == 'push' && github.ref == 'refs/heads/${branch}'`,
+        'runs-on': 'ubuntu-latest',
+        steps: [{ uses: 'actions/checkout@v4' }, { name: 'Deploy', run: deployCmd }],
+      };
+    }
+    return dump({ name: 'CI', on: { push: { branches: [branch] }, pull_request: { branches: [branch] } }, jobs });
   }
+
   if (config.platform === 'gitlab-ci') {
-    return `stages:\n  - build\nbuild:\n  stage: build\n  script:\n${stepCmds.map(c => `    - ${c}`).join('\n')}`;
+    const jobs: Record<string, unknown> = {};
+    const stages: string[] = [];
+    if (buildSteps.length) {
+      stages.push('build');
+      jobs['build'] = { stage: 'build', image: GITLAB_IMAGES[lang], script: buildSteps.map(s => s.cmd) };
+    }
+    if (docker) {
+      stages.push('docker');
+      jobs['docker'] = {
+        stage: 'docker', image: 'docker:27', services: ['docker:27-dind'],
+        variables: { DOCKER_TLS_CERTDIR: '/certs' },
+        script: [`docker build -t ${image}:$CI_COMMIT_SHORT_SHA .`],
+      };
+    }
+    if (deploy) {
+      stages.push('deploy');
+      const rule = config.branch ? `$CI_COMMIT_BRANCH == "${branch}"` : '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH';
+      jobs['deploy'] = { stage: 'deploy', image: GITLAB_IMAGES[lang], script: [deployCmd], rules: [{ if: rule }] };
+    }
+    return dump({ stages, ...jobs });
   }
+
   if (config.platform === 'circleci') {
-    return `version: 2.1\njobs:\n  build:\n    docker:\n      - image: cimg/base:stable\n    steps:\n      - checkout\n${stepCmds.map(c => `      - run: ${c}`).join('\n')}`;
+    const steps: unknown[] = ['checkout', ...buildSteps.map(s => ({ run: { name: s.name, command: s.cmd } }))];
+    if (docker) {
+      steps.push('setup_remote_docker');
+      steps.push({ run: { name: 'Build Docker image', command: `docker build -t ${image}:$CIRCLE_SHA1 .` } });
+    }
+    const jobs: Record<string, unknown> = { build: { docker: [{ image: CIRCLE_IMAGES[lang] }], steps } };
+    const workflowJobs: unknown[] = ['build'];
+    if (deploy) {
+      jobs['deploy'] = { docker: [{ image: CIRCLE_IMAGES[lang] }], steps: ['checkout', { run: { name: 'Deploy', command: deployCmd } }] };
+      workflowJobs.push({ deploy: { requires: ['build'], filters: { branches: { only: branch } } } });
+    }
+    return dump({ version: 2.1, jobs, workflows: { ci: { jobs: workflowJobs } } });
   }
-  return stepCmds.join('\n');
+
+  // azure-pipelines
+  const steps: Record<string, unknown>[] = [AZURE_SETUP[lang], ...buildSteps.map(s => ({ script: s.cmd, displayName: s.name }))];
+  if (docker) steps.push({ script: `docker build -t ${image}:$(Build.SourceVersion) .`, displayName: 'Build Docker image' });
+  if (deploy) {
+    steps.push({
+      script: deployCmd, displayName: 'Deploy',
+      condition: `and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/${branch}'))`,
+    });
+  }
+  return dump({ trigger: [branch], pr: [branch], pool: { vmImage: 'ubuntu-latest' }, steps });
 }
 
 export function detectUnpinnedDockerImages(text: string): DockerImageResult[] {

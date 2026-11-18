@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartDevUtils elements from the CDN build</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      main { max-width: 960px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+      /* Restyle every element with the --sdu-* custom properties. */
+      sdu-recipe { --sdu-radius: 10px; }
+    </style>
+    <script>
+      // Mermaid is loaded from this URL the first time a diagram is drawn (default: jsDelivr).
+      window.SDU_MERMAID_URL = new URL('./mermaid/mermaid.esm.min.mjs', location.href).href
+    </script>
+    <script type="module" src="./sdu/sdu-elements.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>SmartDevUtils elements, plain HTML</h1>
+      <p><button type="button" id="theme">Switch light and dark</button></p>
+
+      <section id="tool">
+        <sdu-tool tool="base64-encoder-decoder" mode="decode" value="eyJ1c2VyIjoic2FtcGxlIiwicm9sZSI6InZpZXdlciJ9"></sdu-tool>
+        <p id="last-output">Waiting for output…</p>
+      </section>
+
+      <section id="diagram">
+        <sdu-diagram label="Build pipeline">
+graph LR
+  A[Push] --> B[Lint]
+  B --> C[Test]
+  C --> D{Branch is main?}
+  D -- yes --> E[Deploy]
+  D -- no --> F[Preview]
+        </sdu-diagram>
+      </section>
+
+      <section id="recipe">
+        <sdu-recipe recipe="decode-base64-json-param"></sdu-recipe>
+      </section>
+
+      <section id="recipe-run">
+        <sdu-recipe-run upload label="Upload a run file"></sdu-recipe-run>
+      </section>
+    </main>
+    <script type="module">
+      document.querySelector('#tool sdu-tool').addEventListener('sdu-output', (e) => {
+        document.getElementById('last-output').textContent = e.detail.error
+          ? `Error: ${e.detail.error}`
+          : `Output: ${e.detail.output}`
+      })
+      document.querySelector('#recipe sdu-recipe').addEventListener('sdu-run', (e) => {
+        document.querySelector('#recipe-run sdu-recipe-run').run = e.detail.run
+      })
+      document.getElementById('theme').addEventListener('click', () => {
+        const root = document.documentElement
+        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'
+      })
+    </script>
+  </body>
+</html>

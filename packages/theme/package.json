@@ -1,0 +1,53 @@
+{
+  "name": "@smartdevutils/theme",
+  "version": "0.1.0",
+  "description": "Framework-neutral CSS for the SmartDevUtils UI packages: design tokens as CSS custom properties (light and dark) and plain class names. No Tailwind needed.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./base.css": "./dist/base.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "node scripts/build.mjs --check",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "2.1.9",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "smartdevutils",
+    "css",
+    "theme",
+    "design-tokens",
+    "dark-mode"
+  ],
+  "author": "ArchitonixLabs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArchitonixLabs/smartdevutils-packages"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

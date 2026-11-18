@@ -36,3 +36,6 @@ export { FakeDataGenerator } from './components/FakeDataGenerator'
 export { IpInspector } from './components/IpInspector'
 export { CspBuilder } from './components/CspBuilder'
 export { TokenEstimator } from './components/TokenEstimator'
+// Generic components on the core tool runners, recipes and Mermaid. Styles: import '@smartdevutils/theme/styles.css'.
+export * from './components/Sdu'
+export { setMermaidLoader, setMermaidUrl, MERMAID_CDN_URL } from '@smartdevutils/browser/mermaid'

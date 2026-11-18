@@ -1,0 +1,16 @@
+{
+  "schema": "sdu-recipe-run/1",
+  "exportedAt": "2026-11-18T09:30:00.000Z",
+  "name": "Read a Base64 JSON query parameter",
+  "basedOn": "decode-base64-json-param",
+  "steps": [
+    { "slug": "url-encoder-decoder", "mode": "decode" },
+    { "slug": "base64-encoder-decoder", "mode": "decode" },
+    { "slug": "json-formatter-validator-minifier-beautifier" }
+  ],
+  "trace": [
+    { "input": "eyJ1c2VyIjoiYWRhIiwicm9sZSI6ImFkbWluIn0%3D", "output": "eyJ1c2VyIjoiYWRhIiwicm9sZSI6ImFkbWluIn0=" },
+    { "input": "eyJ1c2VyIjoiYWRhIiwicm9sZSI6ImFkbWluIn0=", "output": "{\"user\":\"ada\",\"role\":\"admin\"}" },
+    { "input": "{\"user\":\"ada\",\"role\":\"admin\"}", "output": "{\n  \"user\": \"ada\",\n  \"role\": \"admin\"\n}" }
+  ]
+}

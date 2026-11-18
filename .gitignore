@@ -10,5 +10,5 @@ pnpm-debug.log*
 .env
 .env.local
 .env.*.local
-.changeset/*.md
-!.changeset/config.json
+packages/elements/custom-elements.json
+.angular/

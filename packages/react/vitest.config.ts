@@ -4,11 +4,18 @@ import { defineConfig } from 'vitest/config'
 
 const coreDistPath = resolve(__dirname, '../core/dist')
 const browserDistPath = resolve(__dirname, '../browser/dist')
+const recipesDistPath = resolve(__dirname, '../recipes/dist')
+const themeDistPath = resolve(__dirname, '../theme/dist')
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '@smartdevutils/core/tools/catalog': `${coreDistPath}/tools/catalog-entry.cjs`,
+      '@smartdevutils/core/tools': `${coreDistPath}/tools/index.cjs`,
+      '@smartdevutils/recipes': `${recipesDistPath}/index.cjs`,
+      '@smartdevutils/theme': `${themeDistPath}/index.cjs`,
+      '@smartdevutils/browser/mermaid': `${browserDistPath}/mermaid.cjs`,
       '@smartdevutils/core/encoding': `${coreDistPath}/encoding.cjs`,
       '@smartdevutils/core/formatting': `${coreDistPath}/formatting.cjs`,
       '@smartdevutils/core/hashing': `${coreDistPath}/hashing.cjs`,
@@ -40,6 +47,13 @@ export default defineConfig({
     },
   },
   test: {
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
+      exclude: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'src/test-setup.ts'],
+      reporter: ['text-summary', 'lcov'],
+      reportsDirectory: 'coverage',
+    },
     include: ['src/**/*.test.tsx', 'src/**/*.test.ts'],
     environment: 'jsdom',
     setupFiles: ['./src/test-setup.ts'],

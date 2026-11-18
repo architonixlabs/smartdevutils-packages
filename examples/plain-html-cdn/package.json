@@ -1,0 +1,14 @@
+{
+  "name": "@smartdevutils-examples/plain-html-cdn",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A plain HTML page that uses the single-file CDN build of @smartdevutils/elements. No bundler.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "@smartdevutils/elements": "workspace:*",
+    "mermaid": "^12.3.0"
+  }
+}

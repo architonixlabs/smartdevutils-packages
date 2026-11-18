@@ -4,18 +4,22 @@
   "scripts": {
     "build": "turbo build",
     "test": "turbo test",
+    "test:coverage": "turbo test:coverage",
     "lint": "turbo lint",
     "clean": "turbo clean",
+    "size": "node scripts/size-check.mjs",
+    "check:dist": "node scripts/check-dist.mjs",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo build && changeset publish"
+    "release": "echo \"Publishing runs only in the Release workflow after owner approval (environment npm-publish).\" && exit 1",
+    "e2e:ui": "node scripts/e2e-ui.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
     "turbo": "^2.3.0"
   },
   "engines": {
-    "node": ">=20",
+    "node": ">=20.19",
     "pnpm": ">=9"
   },
   "packageManager": "pnpm@9.15.0"

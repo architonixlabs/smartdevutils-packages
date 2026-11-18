@@ -1,122 +1,143 @@
 {
   "name": "@smartdevutils/core",
-  "version": "1.1.0",
-  "description": "Pure TypeScript utility functions for SmartDevUtils tools — hashing, encoding, formatting, generation, text, and more.",
+  "version": "1.3.0",
+  "description": "Pure TypeScript utilities and headless tool runners for SmartDevUtils: hashing, encoding, formatting, generation, databases, DevOps, AI/ML, Mermaid diagram builders and more.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./encoding": {
+      "types": "./dist/encoding.d.ts",
       "import": "./dist/encoding.js",
-      "require": "./dist/encoding.cjs",
-      "types": "./dist/encoding.d.ts"
+      "require": "./dist/encoding.cjs"
     },
     "./formatting": {
+      "types": "./dist/formatting.d.ts",
       "import": "./dist/formatting.js",
-      "require": "./dist/formatting.cjs",
-      "types": "./dist/formatting.d.ts"
+      "require": "./dist/formatting.cjs"
     },
     "./hashing": {
+      "types": "./dist/hashing.d.ts",
       "import": "./dist/hashing.js",
-      "require": "./dist/hashing.cjs",
-      "types": "./dist/hashing.d.ts"
+      "require": "./dist/hashing.cjs"
     },
     "./generation": {
+      "types": "./dist/generation.d.ts",
       "import": "./dist/generation.js",
-      "require": "./dist/generation.cjs",
-      "types": "./dist/generation.d.ts"
+      "require": "./dist/generation.cjs"
     },
     "./text": {
+      "types": "./dist/text.d.ts",
       "import": "./dist/text.js",
-      "require": "./dist/text.cjs",
-      "types": "./dist/text.d.ts"
+      "require": "./dist/text.cjs"
     },
     "./formats": {
+      "types": "./dist/formats.d.ts",
       "import": "./dist/formats.js",
-      "require": "./dist/formats.cjs",
-      "types": "./dist/formats.d.ts"
+      "require": "./dist/formats.cjs"
     },
     "./jwt": {
+      "types": "./dist/jwt.d.ts",
       "import": "./dist/jwt.js",
-      "require": "./dist/jwt.cjs",
-      "types": "./dist/jwt.d.ts"
+      "require": "./dist/jwt.cjs"
     },
     "./dba": {
+      "types": "./dist/dba.d.ts",
       "import": "./dist/dba.js",
-      "require": "./dist/dba.cjs",
-      "types": "./dist/dba.d.ts"
+      "require": "./dist/dba.cjs"
     },
     "./devops": {
+      "types": "./dist/devops.d.ts",
       "import": "./dist/devops.js",
-      "require": "./dist/devops.cjs",
-      "types": "./dist/devops.d.ts"
+      "require": "./dist/devops.cjs"
     },
     "./aiml": {
+      "types": "./dist/aiml.d.ts",
       "import": "./dist/aiml.js",
-      "require": "./dist/aiml.cjs",
-      "types": "./dist/aiml.d.ts"
+      "require": "./dist/aiml.cjs"
     },
     "./security": {
+      "types": "./dist/security.d.ts",
       "import": "./dist/security.js",
-      "require": "./dist/security.cjs",
-      "types": "./dist/security.d.ts"
+      "require": "./dist/security.cjs"
     },
     "./database": {
+      "types": "./dist/database.d.ts",
       "import": "./dist/database.js",
-      "require": "./dist/database.cjs",
-      "types": "./dist/database.d.ts"
+      "require": "./dist/database.cjs"
     },
     "./devops-tools": {
+      "types": "./dist/devops-tools.d.ts",
       "import": "./dist/devops-tools.js",
-      "require": "./dist/devops-tools.cjs",
-      "types": "./dist/devops-tools.d.ts"
+      "require": "./dist/devops-tools.cjs"
     },
     "./aiml-tools": {
+      "types": "./dist/aiml-tools.d.ts",
       "import": "./dist/aiml-tools.js",
-      "require": "./dist/aiml-tools.cjs",
-      "types": "./dist/aiml-tools.d.ts"
+      "require": "./dist/aiml-tools.cjs"
     },
     "./planning": {
+      "types": "./dist/planning.d.ts",
       "import": "./dist/planning.js",
-      "require": "./dist/planning.cjs",
-      "types": "./dist/planning.d.ts"
+      "require": "./dist/planning.cjs"
     },
     "./color": {
+      "types": "./dist/color.d.ts",
       "import": "./dist/color.js",
-      "require": "./dist/color.cjs",
-      "types": "./dist/color.d.ts"
+      "require": "./dist/color.cjs"
     },
     "./network": {
+      "types": "./dist/network.d.ts",
       "import": "./dist/network.js",
-      "require": "./dist/network.cjs",
-      "types": "./dist/network.d.ts"
+      "require": "./dist/network.cjs"
     },
     "./data": {
+      "types": "./dist/data.d.ts",
       "import": "./dist/data.js",
-      "require": "./dist/data.cjs",
-      "types": "./dist/data.d.ts"
+      "require": "./dist/data.cjs"
     },
     "./text-extra": {
+      "types": "./dist/text-extra.d.ts",
       "import": "./dist/text-extra.js",
-      "require": "./dist/text-extra.cjs",
-      "types": "./dist/text-extra.d.ts"
+      "require": "./dist/text-extra.cjs"
     },
     "./developer": {
+      "types": "./dist/developer.d.ts",
       "import": "./dist/developer.js",
-      "require": "./dist/developer.cjs",
-      "types": "./dist/developer.d.ts"
+      "require": "./dist/developer.cjs"
     },
     "./security-extra2": {
+      "types": "./dist/security-extra2.d.ts",
       "import": "./dist/security-extra2.js",
-      "require": "./dist/security-extra2.cjs",
-      "types": "./dist/security-extra2.d.ts"
-    }
+      "require": "./dist/security-extra2.cjs"
+    },
+    "./tools": {
+      "types": "./dist/tools/index.d.ts",
+      "import": "./dist/tools/index.js",
+      "require": "./dist/tools/index.cjs"
+    },
+    "./tools/catalog": {
+      "types": "./dist/tools/catalog-entry.d.ts",
+      "import": "./dist/tools/catalog-entry.js",
+      "require": "./dist/tools/catalog-entry.cjs"
+    },
+    "./tools/*": {
+      "types": "./dist/tools/runners/*.d.ts",
+      "import": "./dist/tools/runners/*.js",
+      "require": "./dist/tools/runners/*.cjs"
+    },
+    "./diagrams": {
+      "types": "./dist/diagrams/index.d.ts",
+      "import": "./dist/diagrams/index.js",
+      "require": "./dist/diagrams/index.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
@@ -125,20 +146,20 @@
     "build": "vite build",
     "test": "vitest run",
     "lint": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.0.0",
-    "marked": "^12.0.0",
+    "@faker-js/faker": "^10.5.0",
     "change-case": "^5.4.4",
     "crypto-js": "^4.2.0",
-    "eff-diceware-passphrase": "^3.0.0",
     "fast-xml-parser": "^5.8.0",
     "generate-schema": "^2.6.0",
     "he": "^1.2.0",
     "js-beautify": "^1.15.0",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^5.5.0",
     "json-to-ts": "^2.1.0",
+    "marked": "^12.0.0",
     "slugify": "^1.6.9",
     "smol-toml": "^1.6.1",
     "sql-formatter": "^15.8.0",
@@ -149,8 +170,9 @@
     "@types/crypto-js": "^4.2.2",
     "@types/he": "^1.2.3",
     "@types/js-beautify": "^1.14.3",
-    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "2.1.9",
+    "eff-diceware-passphrase": "^3.0.0",
     "typescript": "~5.8.0",
     "vite": "^6.0.0",
     "vite-plugin-dts": "^4.0.0",
@@ -162,12 +184,19 @@
     "hashing",
     "encoding",
     "formatting",
-    "developer-tools"
+    "developer-tools",
+    "mermaid",
+    "diagrams",
+    "headless"
   ],
   "author": "ArchitonixLabs",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/ArchitonixLabs/smartdevutils-packages"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.19"
   }
 }

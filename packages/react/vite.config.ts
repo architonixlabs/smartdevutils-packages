@@ -2,6 +2,7 @@ import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
+import { externalsFor } from '../../scripts/externals.mjs'
 
 export default defineConfig({
   plugins: [
@@ -17,7 +18,7 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@smartdevutils/core', '@smartdevutils/browser'],
+      external: externalsFor(resolve(__dirname, 'package.json')),
       output: {
         globals: {
           react: 'React',

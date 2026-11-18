@@ -1,0 +1,23 @@
+{
+  "name": "@smartdevutils-examples/react-vite",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A React + Vite app that uses SduTool, SduDiagram, SduRecipe and SduRecipeRun from @smartdevutils/react.",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@smartdevutils/react": "workspace:*",
+    "@smartdevutils/recipes": "workspace:*",
+    "@smartdevutils/theme": "workspace:*",
+    "mermaid": "^12.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^6.0.0"
+  }
+}

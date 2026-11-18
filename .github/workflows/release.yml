@@ -1,13 +1,75 @@
 name: Release
 
+# Publishing is a manual, owner-approved step.
+# - Runs only when started by hand (Actions > Release > Run workflow), only from main.
+#   Pushing a tag no longer publishes anything.
+# - The publish job uses the GitHub Environment "npm-publish". Configure it in
+#   Settings > Environments with the owner as a required reviewer and NPM_TOKEN as an
+#   environment secret (not a repository secret), so nothing reaches npm until the owner
+#   approves the run.
+# - Every failure fails the job. Versions already on npm are skipped by `changeset publish`
+#   itself (it compares each package with the registry); errors are never hidden.
+# - The default is a dry run: build, test, size and dist checks and `pnpm publish --dry-run`.
+#   It does not use the environment and cannot publish.
+
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run only (build, test, pack). Untick to publish after approval.'
+        type: boolean
+        default: true
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
-  publish:
+  verify:
     runs-on: ubuntu-latest
+    steps:
+      - name: Only from main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Release runs only from main (got ${{ github.ref }})."
+          exit 1
+
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm lint
+      - run: pnpm size
+      - run: pnpm check:dist
+
+      - name: No unapplied changesets
+        run: |
+          set -euo pipefail
+          pending=$(find .changeset -name '*.md' ! -name 'README.md' | wc -l)
+          if [ "$pending" -ne 0 ]; then
+            echo "::error::$pending changeset file(s) not applied yet. Run 'pnpm version-packages', review and merge the version bump, then release."
+            exit 1
+          fi
+
+      - name: Pack (dry run)
+        run: pnpm -r --filter "./packages/*" publish --dry-run --no-git-checks --access public
+
+  publish:
+    needs: verify
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    environment: npm-publish
     permissions:
       contents: write
       id-token: write
@@ -23,28 +85,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - run: pnpm install --frozen-lockfile
-
       - run: pnpm build
 
-      - name: Publish @smartdevutils/core
-        working-directory: packages/core
-        run: npm publish --access public || echo "core already published at this version, skipping"
+      - name: Publish changed packages (with provenance)
+        run: pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
 
-      - name: Publish @smartdevutils/browser
-        working-directory: packages/browser
-        run: npm publish --access public || echo "browser already published at this version, skipping"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish @smartdevutils/react
-        working-directory: packages/react
-        run: npm publish --access public || echo "react already published at this version, skipping"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
+      - name: Push the package tags created by changeset publish
+        run: git push origin --tags

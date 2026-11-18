@@ -1,4 +1,6 @@
-import { html as htmlBeautify } from 'js-beautify';
+// js-beautify is CommonJS: Node's ESM loader cannot see its named exports, so use the default.
+import beautify from 'js-beautify';
+const { html: htmlBeautify } = beautify;
 
 export function jsonFormat(input: string, indent = 2): string {
   return JSON.stringify(JSON.parse(input), null, indent);

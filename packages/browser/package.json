@@ -1,29 +1,65 @@
 {
   "name": "@smartdevutils/browser",
-  "version": "1.0.0",
-  "description": "Browser-only utilities — QR codes, clipboard, file handling, accessibility, color blindness simulation.",
+  "version": "1.1.0",
+  "description": "Browser-only utilities: QR codes, clipboard, file download and upload, accessibility, colour blindness simulation and lazy Mermaid rendering.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".":                 { "import": "./dist/index.js",            "require": "./dist/index.cjs",            "types": "./dist/index.d.ts" },
-    "./qrcode":          { "import": "./dist/qrcode.js",           "require": "./dist/qrcode.cjs",           "types": "./dist/qrcode.d.ts" },
-    "./clipboard":       { "import": "./dist/clipboard.js",        "require": "./dist/clipboard.cjs",        "types": "./dist/clipboard.d.ts" },
-    "./color-blindness": { "import": "./dist/color-blindness.js",  "require": "./dist/color-blindness.cjs",  "types": "./dist/color-blindness.d.ts" },
-    "./file":            { "import": "./dist/file.js",             "require": "./dist/file.cjs",             "types": "./dist/file.d.ts" },
-    "./accessibility":   { "import": "./dist/accessibility.js",    "require": "./dist/accessibility.cjs",    "types": "./dist/accessibility.d.ts" },
-    "./user-agent":      { "import": "./dist/user-agent.js",       "require": "./dist/user-agent.cjs",       "types": "./dist/user-agent.d.ts" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./qrcode": {
+      "types": "./dist/qrcode.d.ts",
+      "import": "./dist/qrcode.js",
+      "require": "./dist/qrcode.cjs"
+    },
+    "./clipboard": {
+      "types": "./dist/clipboard.d.ts",
+      "import": "./dist/clipboard.js",
+      "require": "./dist/clipboard.cjs"
+    },
+    "./color-blindness": {
+      "types": "./dist/color-blindness.d.ts",
+      "import": "./dist/color-blindness.js",
+      "require": "./dist/color-blindness.cjs"
+    },
+    "./file": {
+      "types": "./dist/file.d.ts",
+      "import": "./dist/file.js",
+      "require": "./dist/file.cjs"
+    },
+    "./accessibility": {
+      "types": "./dist/accessibility.d.ts",
+      "import": "./dist/accessibility.js",
+      "require": "./dist/accessibility.cjs"
+    },
+    "./user-agent": {
+      "types": "./dist/user-agent.d.ts",
+      "import": "./dist/user-agent.js",
+      "require": "./dist/user-agent.cjs"
+    },
+    "./mermaid": {
+      "types": "./dist/mermaid.d.ts",
+      "import": "./dist/mermaid.js",
+      "require": "./dist/mermaid.cjs"
+    }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
     "lint": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@smartdevutils/core": "workspace:*",
+    "@smartdevutils/core": "workspace:^",
     "axe-core": "^4.9.0",
     "dompurify": "^3.1.0",
     "qrcode": "^1.5.4",
@@ -34,13 +70,27 @@
     "@types/node": "^20.0.0",
     "@types/qrcode": "^1.5.5",
     "@types/ua-parser-js": "^0.7.39",
+    "@vitest/coverage-v8": "2.1.9",
     "typescript": "~5.8.0",
     "vite": "^6.0.0",
     "vite-plugin-dts": "^4.0.0",
     "vitest": "^2.0.0"
   },
-  "keywords": ["smartdevutils", "browser", "qrcode", "accessibility", "clipboard"],
+  "keywords": [
+    "smartdevutils",
+    "browser",
+    "qrcode",
+    "accessibility",
+    "clipboard"
+  ],
   "author": "ArchitonixLabs",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/ArchitonixLabs/smartdevutils-packages" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArchitonixLabs/smartdevutils-packages"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.19"
+  }
 }

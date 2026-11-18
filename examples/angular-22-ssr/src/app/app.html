@@ -1,0 +1,26 @@
+<main class="page">
+  <h1>SmartDevUtils on Angular 22 with SSR</h1>
+  <p><button type="button" (click)="toggleTheme()">Switch light and dark</button></p>
+
+  <section id="tool">
+    <!-- Runs on the server too: the server-rendered HTML already holds the decoded text. -->
+    <sdu-tool tool="url-encoder-decoder" mode="decode" [(value)]="encoded" />
+  </section>
+
+  <section id="named">
+    <sdu-hash-generator mode="sha256" value="synthetic sample text" />
+  </section>
+
+  <section id="diagram">
+    <!-- Drawn in the browser after hydration; the server sends the frame and the source. -->
+    <sdu-diagram [source]="erd" label="Orders data model" />
+  </section>
+
+  <section id="recipe">
+    <sdu-recipe recipe="json-to-base64-env" (run)="lastRun.set($event)" />
+  </section>
+
+  <section id="recipe-run">
+    <sdu-recipe-run [run]="lastRun()" upload label="Last run" />
+  </section>
+</main>

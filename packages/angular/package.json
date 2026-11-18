@@ -1,0 +1,81 @@
+{
+  "name": "@smartdevutils/angular",
+  "version": "0.1.0",
+  "description": "Angular standalone components for SmartDevUtils: a generic sdu-tool driven by the core tool runners, Mermaid diagrams, recipes and run files, and ready-made tool components. Signal inputs, SSR-safe, no Tailwind.",
+  "type": "module",
+  "module": "./dist/fesm2022/smartdevutils-angular.mjs",
+  "typings": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/fesm2022/smartdevutils-angular.mjs",
+      "default": "./dist/fesm2022/smartdevutils-angular.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json && node scripts/postbuild.mjs",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "tsc -p tsconfig.lib.json --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@smartdevutils/browser": "workspace:^",
+    "@smartdevutils/core": "workspace:^",
+    "@smartdevutils/recipes": "workspace:^",
+    "@smartdevutils/theme": "workspace:^",
+    "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0",
+    "@angular/core": "^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0",
+    "@angular/platform-browser": "^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0",
+    "mermaid": "^11.0.0 || ^12.0.0"
+  },
+  "peerDependenciesMeta": {
+    "mermaid": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "~1.22.5",
+    "@analogjs/vitest-angular": "~1.22.5",
+    "@angular/build": "~19.2.0",
+    "@angular/common": "~19.2.0",
+    "@angular/compiler": "~19.2.0",
+    "@angular/compiler-cli": "~19.2.0",
+    "@angular/core": "~19.2.0",
+    "@angular/platform-browser": "~19.2.0",
+    "@angular/platform-browser-dynamic": "~19.2.0",
+    "@vitest/coverage-v8": "2.1.9",
+    "jsdom": "^25.0.0",
+    "ng-packagr": "~19.2.0",
+    "rxjs": "~7.8.0",
+    "typescript": "~5.8.0",
+    "vite": "^6.0.0",
+    "vitest": "^2.0.0",
+    "zone.js": "~0.15.0"
+  },
+  "keywords": [
+    "smartdevutils",
+    "angular",
+    "standalone-components",
+    "signals",
+    "ssr",
+    "mermaid",
+    "developer-tools"
+  ],
+  "author": "ArchitonixLabs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArchitonixLabs/smartdevutils-packages"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

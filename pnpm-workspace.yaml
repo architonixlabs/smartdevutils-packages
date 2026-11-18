@@ -1,2 +1,4 @@
 packages:
   - 'packages/*'
+  # Example apps: private, built by `pnpm build`, never published.
+  - 'examples/*'

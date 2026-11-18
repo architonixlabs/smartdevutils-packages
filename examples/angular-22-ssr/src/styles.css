@@ -1,0 +1,2 @@
+body { margin: 0; font-family: system-ui, sans-serif; background: var(--sdu-bg, #fff); color: var(--sdu-fg, #1a1d23); }
+.page { max-width: 960px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }

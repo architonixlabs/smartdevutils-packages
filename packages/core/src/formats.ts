@@ -1,14 +1,17 @@
-import { js as jsBeautify, css as cssBeautify } from 'js-beautify';
-import yaml from 'js-yaml';
+// js-beautify is CommonJS: Node's ESM loader cannot see its named exports, so use the default.
+import beautify from 'js-beautify';
+import { dumpYaml, loadYaml } from './yaml';
 import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import { parse as tomlParse, stringify as tomlStringify } from 'smol-toml';
 import { format as sqlFormatterFormat } from 'sql-formatter';
 import JsonToTS from 'json-to-ts';
 import generateSchema from 'generate-schema';
 
+const { js: jsBeautify, css: cssBeautify } = beautify;
+
 export function yamlFormat(input: string): string {
-  const parsed = yaml.load(input);
-  return yaml.dump(parsed, { indent: 2 });
+  const parsed = loadYaml(input);
+  return dumpYaml(parsed, { indent: 2 });
 }
 
 export function xmlFormat(input: string): string {

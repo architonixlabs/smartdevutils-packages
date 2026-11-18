@@ -1,0 +1,25 @@
+<main class="page">
+  <h1>SmartDevUtils on Angular 19</h1>
+  <p><button type="button" (click)="toggleTheme()">Switch light and dark</button></p>
+
+  <section id="tool">
+    <sdu-tool tool="json-formatter" mode="format" [(value)]="text" (result)="onResult($event)" />
+    <p data-testid="last-result">Last result: {{ last() }}</p>
+  </section>
+
+  <section id="named">
+    <sdu-base64 mode="decode" value="aGVsbG8gZnJvbSBBbmd1bGFy" />
+  </section>
+
+  <section id="diagram">
+    <sdu-diagram [source]="flow" label="Release flow" />
+  </section>
+
+  <section id="recipe">
+    <sdu-recipe recipe="decode-base64-json-param" (run)="lastRun.set($event)" />
+  </section>
+
+  <section id="recipe-run">
+    <sdu-recipe-run [run]="lastRun()" upload label="Last run" />
+  </section>
+</main>

@@ -14,7 +14,11 @@ describe('yamlFormat', () => {
     expect(result).toContain('age: 30');
   });
   it('throws on invalid YAML', () => {
-    expect(() => yamlFormat(': : invalid')).toThrow();
+    expect(() => yamlFormat('key: [unclosed')).toThrow();
+    expect(() => yamlFormat('a: b: c')).toThrow();
+  });
+  it('reads an empty key as YAML 1.2 allows (js-yaml 5; js-yaml 4 threw)', () => {
+    expect(yamlFormat(': value')).toBe("'null': value\n");
   });
 });
 

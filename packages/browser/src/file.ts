@@ -17,8 +17,17 @@ export function base64ToBlob(base64: string, mimeType: string): Blob {
 export function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
-  a.href = url; a.download = filename; a.click()
-  URL.revokeObjectURL(url)
+  a.href = url; a.download = filename; a.rel = 'noopener'; a.style.display = 'none'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  // Some browsers start the download after click() returns, so the URL is revoked a little later.
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+
+/** Saves text as a file, for example a run file as application/json. */
+export function downloadText(text: string, filename: string, type = 'text/plain'): void {
+  downloadBlob(new Blob([text], { type: `${type};charset=utf-8` }), filename)
 }
 
 export function readFileAsText(file: File): Promise<string> {

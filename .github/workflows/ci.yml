@@ -23,6 +23,29 @@ jobs:
 
       - run: pnpm build
 
-      - run: pnpm test
+      - name: Test with coverage (lcov per package, for SonarQube)
+        run: pnpm test:coverage
 
       - run: pnpm lint
+
+      - name: Size budgets (size-budgets.json)
+        run: pnpm size
+
+      - name: Every export loads through import() and require()
+        run: pnpm check:dist
+
+      - name: CycloneDX SBOM per package (upload to Dependency-Track from the internal runner)
+        run: |
+          set -euo pipefail
+          mkdir -p sbom
+          for dir in packages/*/; do
+            name=$(basename "$dir")
+            npx --yes @cyclonedx/cdxgen@11 -t js --required-only -o "sbom/$name.cdx.json" "$dir"
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-and-sbom
+          path: |
+            packages/*/coverage/lcov.info
+            sbom/*.cdx.json
