@@ -56,7 +56,7 @@ runFileText(run) // upload it on smartdevutils.com/recipes/run
 
 ```html
 <!-- Any page, no build step -->
-<script type="module" src="https://cdn.jsdelivr.net/npm/@smartdevutils/elements@0/dist/cdn/sdu-elements.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@smartdevutils/elements@1/dist/cdn/sdu-elements.js"></script>
 <sdu-tool tool="base64-encoder-decoder" mode="decode" value="aGVsbG8="></sdu-tool>
 <sdu-recipe recipe="decode-base64-json-param"></sdu-recipe>
 <sdu-diagram source="graph LR; Build-->Test-->Deploy"></sdu-diagram>

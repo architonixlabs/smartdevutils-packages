@@ -29,10 +29,10 @@ import '@smartdevutils/elements/recipe'     // <sdu-recipe>
 **From a CDN, with no build step:** one script tag registers every element. Tool runners and the recipe engine are separate files, fetched the first time an element needs them.
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@smartdevutils/elements@0/dist/cdn/sdu-elements.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@smartdevutils/elements@1/dist/cdn/sdu-elements.js"></script>
 ```
 
-The CDN link works once the package is on npm. Until then, copy `dist/cdn/` to your own server (see `examples/plain-html-cdn`).
+To self-host instead of using the CDN, copy `dist/cdn/` to your own server (see `examples/plain-html-cdn`).
 
 Registering is idempotent: loading two bundles that both contain the elements does not throw, and the first registration is kept.
 
