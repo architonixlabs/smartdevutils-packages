@@ -754,7 +754,7 @@ async function main() {
   )
   if (stats.tools) {
     log(
-      `  tools: website examples from the ${stats.tools.examplesSource === 'website' ? 'website repo (snapshot refreshed)' : `committed snapshot (${stats.tools.examplesError})`}, ${stats.tools.websiteExamplesUsed} used (${stats.tools.adapted} adapted to runner format), ${stats.tools.fallbacks} tools on built-in examples, ${stats.tools.dropped.length} examples dropped`,
+      `  tools: website examples from the ${stats.tools.examplesSource === 'website' ? 'website repo (snapshot refreshed)' : `committed snapshot (${stats.tools.examplesError})`}, ${stats.tools.websiteExamplesUsed} used, ${stats.tools.fallbacks} tools on built-in examples, ${stats.tools.dropped.length} examples dropped`,
     )
   }
   if (stats.generatedFailed.length) log(`  ${stats.generatedFailed.length} generated snippets do not run as is in Node (left node: false)`)

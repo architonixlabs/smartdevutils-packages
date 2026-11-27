@@ -68,59 +68,6 @@ export function loadToolExamples({ websiteFile = TOOL_EXAMPLES_FILE, snapshotFil
   throw new Error(`No tool examples: the website file is missing (${site.error}) and there is no snapshot at ${snapshotFile}.`)
 }
 
-// The website's examples sometimes use the website component's field names or its text-box format.
-// These adapters turn them into the runner's input and option names (documented in each runner).
-const OPTION_ALIASES = {
-  'ddl-diff': { right: 'after' },
-  'migration-generator': { right: 'after' },
-  'log-parser': { level: 'levelFilter' },
-  'performance-sla-checker': { p50: 'p50Target', p95: 'p95Target', p99: 'p99Target' },
-}
-
-const DATE = String.raw`\d{4}-\d{2}-\d{2}`
-const INPUT_ADAPTERS = {
-  // "age integer 18..65" -> options
-  'boundary-value-analyzer': (input, options) => {
-    const m = /^\s*(\S+)\s+(integer|decimal)\s+(-?[\d.]+)\s*\.\.\s*(-?[\d.]+)\s*$/i.exec(input)
-    if (!m) return null
-    return { input: '', options: { ...options, fieldName: m[1], fieldType: m[2].toLowerCase(), min: Number(m[3]), max: Number(m[4]) } }
-  },
-  // "Task, 2026-03-02, 2026-03-13, Section" lines -> JSON rows
-  'gantt-generator': (input, options) => {
-    const re = new RegExp(`^(.*?),\\s*(${DATE}),\\s*(${DATE})(?:,\\s*(.*))?$`)
-    const rows = []
-    for (const line of input.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)) {
-      const m = re.exec(line)
-      if (!m) return null
-      rows.push({ title: m[1].trim(), start: m[2], end: m[3], ...(m[4] ? { section: m[4].trim() } : {}) })
-    }
-    return rows.length ? { input: JSON.stringify(rows, null, 2), options } : null
-  },
-  // "users\nid SERIAL pk\nemail VARCHAR(255) not null default x" -> { tableName, columns }
-  'sql-create-table': (input, options) => {
-    const lines = input.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
-    if (lines.length < 2 || lines[0].includes(' ')) return null
-    const columns = lines.slice(1).map((line) => {
-      const name = line.split(/\s+/)[0]
-      let rest = line.slice(name.length).trim()
-      const def = /\bdefault\s+(.+)$/i.exec(rest)
-      if (def) rest = rest.slice(0, def.index).trim()
-      const primaryKey = /\bpk\b/i.test(rest)
-      const notNull = /\bnot\s+null\b/i.test(rest)
-      const type = rest.replace(/\bpk\b/gi, '').replace(/\bnot\s+null\b/gi, '').replace(/\s+/g, ' ').trim()
-      return { name, type, nullable: !notNull && !primaryKey, primaryKey, defaultValue: def ? def[1].trim() : '' }
-    })
-    return { input: JSON.stringify({ tableName: lines[0], columns }, null, 2), options }
-  },
-  // "node github-actions install lint test build" -> options
-  'cicd-pipeline-builder': (input, options) => {
-    const words = input.trim().split(/\s+/).filter(Boolean)
-    if (words.length < 2) return input.trim() ? null : { input: '', options }
-    const [language, platform, ...steps] = words
-    return { input: '', options: { ...options, language, platform, ...(steps.length ? { steps } : {}) } }
-  },
-}
-
 /** When the website has no usable example (or the examples file is missing). */
 const FALLBACK_INPUTS = {
   'url-encoder-decoder': { label: 'Query string with spaces', input: 'q=hello world&lang=en' },
@@ -162,14 +109,9 @@ const FALLBACK_INPUTS = {
   'performance-sla-checker': { label: 'Response times', input: '120\n135\n128\n142\n150\n133\n161\n147\n410\n980' },
 }
 
-function adaptExample(toolId, ex) {
-  const aliases = OPTION_ALIASES[toolId] ?? {}
-  const options = {}
-  for (const [k, v] of Object.entries(ex.options ?? {})) options[aliases[k] ?? k] = v
-  const adapter = INPUT_ADAPTERS[toolId]
-  const adapted = adapter ? adapter(ex.input ?? '', options) : null
-  const changed = Boolean(adapted) || Object.keys(aliases).some((k) => k in (ex.options ?? {}))
-  return { label: ex.label, ...(adapted ?? { input: ex.input ?? '', options }), adapted: changed }
+/** The website's examples are written in the runners' input format and option names, so they run as they are. */
+function toExample(ex) {
+  return { label: ex.label, input: ex.input ?? '', options: { ...ex.options } }
 }
 
 async function tryRun(id, input, mode, options) {
@@ -242,9 +184,7 @@ function runToolSnippet({ id, spec, ex, mode, idSuffix, note }) {
     code: lines.join('\n') + '\n',
     mode: 'run',
     output: 'console',
-    description: ex.adapted
-      ? 'Website example, written in the runner’s input format.'
-      : ex.fallback
+    description: ex.fallback
         ? 'Built-in example (the website examples were not available at build time).'
         : 'Example from the tool’s page on smartdevutils.com.',
     source: 'generated',
@@ -317,11 +257,11 @@ function toolDocs(spec, entry, usedExamples) {
 export async function buildToolSections() {
   const { examples, source, error } = loadToolExamples()
   const catalogById = new Map(TOOL_CATALOG.map((t) => [t.id, t]))
-  const stats = { examplesSource: source, examplesError: error, websiteExamplesUsed: 0, adapted: 0, fallbacks: 0, dropped: [] }
+  const stats = { examplesSource: source, examplesError: error, websiteExamplesUsed: 0, fallbacks: 0, dropped: [] }
   const runnableItems = []
   for (const spec of TOOL_SPECS) {
     const entry = catalogById.get(spec.id)
-    const candidates = (examples[spec.id] ?? []).map((ex) => adaptExample(spec.id, ex))
+    const candidates = (examples[spec.id] ?? []).map(toExample)
     const working = []
     for (const ex of candidates) {
       if (working.length >= MAX_EXAMPLES) break
@@ -338,7 +278,6 @@ export async function buildToolSections() {
       stats.fallbacks++
     } else {
       stats.websiteExamplesUsed += working.length
-      stats.adapted += working.filter((w) => w.adapted).length
     }
     const snippets = working.map((ex, i) => runToolSnippet({ id: spec.id, spec, ex, idSuffix: i + 1 }))
     // Other modes (decode, minify, other hashes), from the first example or from its output.

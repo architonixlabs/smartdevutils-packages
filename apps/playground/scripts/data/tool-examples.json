@@ -16,25 +16,63 @@
   "boundary-value-analyzer": [
     {
       "label": "Age field, 18 to 65",
-      "input": "age integer 18..65"
+      "input": "",
+      "options": {
+        "fieldName": "age",
+        "fieldType": "integer",
+        "max": 65,
+        "min": 18
+      }
     },
     {
       "label": "Product price, 0.01 to 999.99",
-      "input": "price decimal 0.01..999.99"
+      "input": "",
+      "options": {
+        "fieldName": "price",
+        "fieldType": "decimal",
+        "max": 999.99,
+        "min": 0.01
+      }
     },
     {
       "label": "Star rating 1 to 3 (narrow range)",
-      "input": "rating integer 1..3"
+      "input": "",
+      "options": {
+        "fieldName": "rating",
+        "fieldType": "integer",
+        "max": 3,
+        "min": 1
+      }
     }
   ],
   "cicd-pipeline-builder": [
     {
       "label": "GitHub Actions for a Node app",
-      "input": "node github-actions install lint test build"
+      "input": "",
+      "options": {
+        "language": "node",
+        "platform": "github-actions",
+        "steps": [
+          "install",
+          "lint",
+          "test",
+          "build"
+        ]
+      }
     },
     {
       "label": "GitLab CI for a Python Docker image",
-      "input": "python gitlab-ci install lint test docker"
+      "input": "",
+      "options": {
+        "language": "python",
+        "platform": "gitlab-ci",
+        "steps": [
+          "install",
+          "lint",
+          "test",
+          "docker"
+        ]
+      }
     },
     {
       "label": "CircleCI for a Rust crate",
@@ -56,21 +94,21 @@
       "label": "Add a column and widen another",
       "input": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);",
       "options": {
-        "right": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email TEXT\n);"
+        "after": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email TEXT\n);"
       }
     },
     {
       "label": "Retype money columns, drop a legacy one",
       "input": "CREATE TABLE orders (\n  id INT PRIMARY KEY,\n  status VARCHAR(20),\n  total FLOAT,\n  legacy_ref VARCHAR(40),\n  created_at TIMESTAMP\n);",
       "options": {
-        "right": "CREATE TABLE orders (\n  id INT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL,\n  total DECIMAL(12,2),\n  currency CHAR(3) DEFAULT 'USD',\n  created_at TIMESTAMP\n);"
+        "after": "CREATE TABLE orders (\n  id INT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL,\n  total DECIMAL(12,2),\n  currency CHAR(3) DEFAULT 'USD',\n  created_at TIMESTAMP\n);"
       }
     },
     {
       "label": "Same schema, different formatting",
       "input": "CREATE TABLE tags (id INT PRIMARY KEY, name VARCHAR(50) NOT NULL, slug VARCHAR(60));",
       "options": {
-        "right": "CREATE TABLE tags (\n    id     INT PRIMARY KEY,\n    name   VARCHAR(50) NOT NULL,\n    slug   VARCHAR(60)\n);"
+        "after": "CREATE TABLE tags (\n    id     INT PRIMARY KEY,\n    name   VARCHAR(50) NOT NULL,\n    slug   VARCHAR(60)\n);"
       }
     }
   ],
@@ -91,15 +129,15 @@
   "gantt-generator": [
     {
       "label": "Website relaunch plan",
-      "input": "Discovery, 2026-03-02, 2026-03-13, Plan\nWireframes, 2026-03-16, 2026-03-27, Design\nVisual design, 2026-03-30, 2026-04-10, Design\nFrontend build, 2026-04-13, 2026-05-08, Build\nContent migration, 2026-04-27, 2026-05-15, Build\nLaunch, 2026-05-18, 2026-05-22, Release"
+      "input": "[{\"title\":\"Discovery\",\"start\":\"2026-03-02\",\"end\":\"2026-03-13\",\"section\":\"Plan\"},{\"title\":\"Wireframes\",\"start\":\"2026-03-16\",\"end\":\"2026-03-27\",\"section\":\"Design\"},{\"title\":\"Visual design\",\"start\":\"2026-03-30\",\"end\":\"2026-04-10\",\"section\":\"Design\"},{\"title\":\"Frontend build\",\"start\":\"2026-04-13\",\"end\":\"2026-05-08\",\"section\":\"Build\"},{\"title\":\"Content migration\",\"start\":\"2026-04-27\",\"end\":\"2026-05-15\",\"section\":\"Build\"},{\"title\":\"Launch\",\"start\":\"2026-05-18\",\"end\":\"2026-05-22\",\"section\":\"Release\"}]"
     },
     {
       "label": "Mobile app v2 release",
-      "input": "Requirements sign-off, 2026-06-01, 2026-06-05, Planning\nAPI changes, 2026-06-08, 2026-07-03, Backend\nAuth service upgrade, 2026-06-15, 2026-06-26, Backend\niOS screens, 2026-06-22, 2026-07-24, Mobile\nAndroid screens, 2026-06-22, 2026-07-24, Mobile\nBeta testing, 2026-07-27, 2026-08-14, QA\nStore review, 2026-08-17, 2026-08-21, Release\nPublic launch, 2026-08-24, 2026-08-25, Release"
+      "input": "[{\"title\":\"Requirements sign-off\",\"start\":\"2026-06-01\",\"end\":\"2026-06-05\",\"section\":\"Planning\"},{\"title\":\"API changes\",\"start\":\"2026-06-08\",\"end\":\"2026-07-03\",\"section\":\"Backend\"},{\"title\":\"Auth service upgrade\",\"start\":\"2026-06-15\",\"end\":\"2026-06-26\",\"section\":\"Backend\"},{\"title\":\"iOS screens\",\"start\":\"2026-06-22\",\"end\":\"2026-07-24\",\"section\":\"Mobile\"},{\"title\":\"Android screens\",\"start\":\"2026-06-22\",\"end\":\"2026-07-24\",\"section\":\"Mobile\"},{\"title\":\"Beta testing\",\"start\":\"2026-07-27\",\"end\":\"2026-08-14\",\"section\":\"QA\"},{\"title\":\"Store review\",\"start\":\"2026-08-17\",\"end\":\"2026-08-21\",\"section\":\"Release\"},{\"title\":\"Public launch\",\"start\":\"2026-08-24\",\"end\":\"2026-08-25\",\"section\":\"Release\"}]"
     },
     {
       "label": "Unsectioned tasks with colons",
-      "input": "Kickoff: scope review, 2026-09-07, 2026-09-08\nSprint 1: data model, 2026-09-08, 2026-09-21\nSprint 2: reporting, 2026-09-22, 2026-10-05\nGo-live, 2026-10-06, 2026-10-07"
+      "input": "[{\"title\":\"Kickoff: scope review\",\"start\":\"2026-09-07\",\"end\":\"2026-09-08\"},{\"title\":\"Sprint 1: data model\",\"start\":\"2026-09-08\",\"end\":\"2026-09-21\"},{\"title\":\"Sprint 2: reporting\",\"start\":\"2026-09-22\",\"end\":\"2026-10-05\"},{\"title\":\"Go-live\",\"start\":\"2026-10-06\",\"end\":\"2026-10-07\"}]"
     }
   ],
   "hash-generator": [
@@ -171,7 +209,7 @@
       "label": "Journald lines filtered to warnings",
       "input": "Nov 27 09:30:01 node-3 kubelet[812]: INFO Pod orders-7d9f6 started\nNov 27 09:30:04 node-3 kubelet[812]: WARNING Eviction threshold close: memory.available 310Mi\nNov 27 09:30:07 node-3 containerd[640]: ERROR Image pull back-off for acme/worker:2.1.0\nNov 27 09:30:09 node-3 systemd[1]: WARN Disk usage at 91% on /var/lib/containerd\nNov 27 09:30:12 node-3 kubelet[812]: DEBUG Sync loop iteration took 18ms\n",
       "options": {
-        "level": "WARN"
+        "levelFilter": "WARN"
       }
     }
   ],
@@ -180,24 +218,24 @@
       "label": "Add columns in PostgreSQL",
       "input": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100)\n);",
       "options": {
-        "dialect": "postgres",
-        "right": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100),\n  email TEXT,\n  created_at TIMESTAMP DEFAULT NOW()\n);"
+        "after": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100),\n  email TEXT,\n  created_at TIMESTAMP DEFAULT NOW()\n);",
+        "dialect": "postgres"
       }
     },
     {
       "label": "Reshape an orders table in MySQL",
       "input": "CREATE TABLE orders (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  status VARCHAR(20),\n  total FLOAT,\n  notes TEXT\n);",
       "options": {
-        "dialect": "mysql",
-        "right": "CREATE TABLE orders (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL DEFAULT 'new',\n  total DECIMAL(12,2),\n  shipped_at DATETIME\n);"
+        "after": "CREATE TABLE orders (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL DEFAULT 'new',\n  total DECIMAL(12,2),\n  shipped_at DATETIME\n);",
+        "dialect": "mysql"
       }
     },
     {
       "label": "Change column types in PostgreSQL",
       "input": "CREATE TABLE events (\n  id SERIAL PRIMARY KEY,\n  title TEXT,\n  score FLOAT\n);",
       "options": {
-        "dialect": "postgres",
-        "right": "CREATE TABLE events (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(500),\n  score INTEGER\n);"
+        "after": "CREATE TABLE events (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(500),\n  score INTEGER\n);",
+        "dialect": "postgres"
       }
     }
   ],
@@ -206,27 +244,27 @@
       "label": "Search API latency within SLA",
       "input": "82\n95\n101\n110\n118\n124\n131\n140\n146\n152\n160\n171\n180\n188\n195\n210\n232\n265\n310\n420",
       "options": {
-        "p50": 200,
-        "p95": 500,
-        "p99": 1000
+        "p50Target": 200,
+        "p95Target": 500,
+        "p99Target": 1000
       }
     },
     {
       "label": "Checkout endpoint with a slow tail",
       "input": "142ms, 156ms, 161ms, 170ms, 175ms, 183ms, 190ms, 198ms, 204ms, 212ms, 221ms, 230ms, 244ms, 259ms, 280ms, 315ms, 390ms, 640ms, 910ms, 1480ms",
       "options": {
-        "p50": 250,
-        "p95": 400,
-        "p99": 800
+        "p50Target": 250,
+        "p95Target": 400,
+        "p99Target": 800
       }
     },
     {
       "label": "Log export with stray tokens",
       "input": "120; 135; 128; timeout; 142; 150; n/a; 133; 161; 0.5ms; 147",
       "options": {
-        "p50": 250,
-        "p95": 300,
-        "p99": 500
+        "p50Target": 250,
+        "p95Target": 300,
+        "p99Target": 500
       }
     }
   ],
@@ -261,14 +299,14 @@
   "sql-create-table": [
     {
       "label": "Users table in PostgreSQL",
-      "input": "users\nid SERIAL pk\nemail VARCHAR(255) not null\ndisplay_name VARCHAR(100)\ncreated_at TIMESTAMP not null default CURRENT_TIMESTAMP",
+      "input": "{\"tableName\":\"users\",\"columns\":[{\"name\":\"id\",\"type\":\"SERIAL\",\"nullable\":false,\"primaryKey\":true,\"defaultValue\":\"\"},{\"name\":\"email\",\"type\":\"VARCHAR(255)\",\"nullable\":false,\"primaryKey\":false,\"defaultValue\":\"\"},{\"name\":\"display_name\",\"type\":\"VARCHAR(100)\",\"nullable\":true,\"primaryKey\":false,\"defaultValue\":\"\"},{\"name\":\"created_at\",\"type\":\"TIMESTAMP\",\"nullable\":false,\"primaryKey\":false,\"defaultValue\":\"CURRENT_TIMESTAMP\"}]}",
       "options": {
         "dialect": "postgres"
       }
     },
     {
       "label": "Order lines in MySQL with money",
-      "input": "order_items\nid BIGINT pk\norder_id BIGINT not null\nsku VARCHAR(40) not null\nquantity INT not null default 1\nunit_price DECIMAL(10, 2) not null",
+      "input": "{\"tableName\":\"order_items\",\"columns\":[{\"name\":\"id\",\"type\":\"BIGINT\",\"nullable\":false,\"primaryKey\":true,\"defaultValue\":\"\"},{\"name\":\"order_id\",\"type\":\"BIGINT\",\"nullable\":false,\"primaryKey\":false,\"defaultValue\":\"\"},{\"name\":\"sku\",\"type\":\"VARCHAR(40)\",\"nullable\":false,\"primaryKey\":false,\"defaultValue\":\"\"},{\"name\":\"quantity\",\"type\":\"INT\",\"nullable\":false,\"primaryKey\":false,\"defaultValue\":\"1\"},{\"name\":\"unit_price\",\"type\":\"DECIMAL(10, 2)\",\"nullable\":false,\"primaryKey\":false,\"defaultValue\":\"\"}]}",
       "options": {
         "dialect": "mysql"
       }
