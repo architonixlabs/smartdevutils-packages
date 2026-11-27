@@ -1,5 +1,12 @@
 # @smartdevutils/recipes
 
+## 1.3.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @smartdevutils/core@1.3.1
+
 ## 1.3.0
 
 ### Patch Changes

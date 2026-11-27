@@ -1,6 +1,6 @@
 {
   "name": "@smartdevutils/react",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "React component library for SmartDevUtils tools — drop-in UI panels for hashing, encoding, formatting, and more.",
   "type": "module",
   "main": "./dist/index.cjs",

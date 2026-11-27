@@ -1,6 +1,6 @@
 {
   "name": "@smartdevutils/recipes",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "SmartDevUtils recipes (tool chains) as data, plus a headless engine that runs them through @smartdevutils/core tool runners and records sdu-recipe-run/1 files.",
   "type": "module",
   "main": "./dist/index.cjs",

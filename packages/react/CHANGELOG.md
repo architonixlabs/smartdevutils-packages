@@ -1,5 +1,15 @@
 # @smartdevutils/react
 
+## 1.3.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @smartdevutils/core@1.3.1
+  - @smartdevutils/browser@1.3.1
+  - @smartdevutils/recipes@1.3.1
+  - @smartdevutils/theme@1.3.1
+
 ## 1.3.0
 
 ### Minor Changes

@@ -66,7 +66,7 @@ function generateField(type: FakeFieldType): unknown {
     case 'city':       return faker.location.city()
     case 'country':    return faker.location.country()
     case 'zipCode':    return faker.location.zipCode()
-    case 'ipv4':       return faker.internet.ip()
+    case 'ipv4':       return faker.internet.ipv4()
     default:           return ''
   }
 }

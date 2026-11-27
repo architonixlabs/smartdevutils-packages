@@ -42,3 +42,12 @@ describe('generateFakeDataset', () => {
     expect(data).toHaveLength(5)
   })
 })
+
+describe('ipv4 field', () => {
+  it('is always a dotted-quad IPv4 address, never IPv6', () => {
+    const ipv4 = /^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/
+    for (const row of generateFakeDataset({ ip: 'ipv4' }, 500) as { ip: string }[]) {
+      expect(row.ip).toMatch(ipv4)
+    }
+  })
+})

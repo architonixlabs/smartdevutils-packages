@@ -1,5 +1,11 @@
 # Changelog — @smartdevutils/core
 
+## 1.3.1
+
+### Patch Changes
+
+- `generateFakeDataset` / `generateFakeRecord`: the `ipv4` field type now always returns an IPv4 address (it used `faker.internet.ip()`, which sometimes returned IPv6).
+
 ## 1.3.0
 
 ### Minor Changes
