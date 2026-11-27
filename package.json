@@ -22,5 +22,16 @@
     "node": ">=20.19",
     "pnpm": ">=9"
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "packageExtensions": {
+      "@analogjs/vite-plugin-angular": {
+        "peerDependencies": {
+          "@angular/compiler": "*",
+          "@angular/compiler-cli": "*",
+          "typescript": "*"
+        }
+      }
+    }
+  }
 }
