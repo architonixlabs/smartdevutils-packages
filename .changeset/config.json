@@ -2,13 +2,18 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [],
-  "linked": [
+  "fixed": [
     [
       "@smartdevutils/core",
-      "@smartdevutils/react"
+      "@smartdevutils/react",
+      "@smartdevutils/browser",
+      "@smartdevutils/angular",
+      "@smartdevutils/elements",
+      "@smartdevutils/recipes",
+      "@smartdevutils/theme"
     ]
   ],
+  "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

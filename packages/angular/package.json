@@ -1,6 +1,6 @@
 {
   "name": "@smartdevutils/angular",
-  "version": "0.1.0",
+  "version": "1.3.0",
   "description": "Angular standalone components for SmartDevUtils: a generic sdu-tool driven by the core tool runners, Mermaid diagrams, recipes and run files, and ready-made tool components. Signal inputs, SSR-safe, no Tailwind.",
   "type": "module",
   "module": "./dist/fesm2022/smartdevutils-angular.mjs",

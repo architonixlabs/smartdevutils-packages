@@ -1,6 +1,6 @@
 {
   "name": "@smartdevutils/elements",
-  "version": "0.1.0",
+  "version": "1.3.0",
   "description": "Web Components (Lit) for SmartDevUtils: a generic <sdu-tool> driven by the core tool runners, <sdu-diagram> for Mermaid, and <sdu-recipe> / <sdu-recipe-run> for tool chains. Works in any framework or plain HTML.",
   "type": "module",
   "module": "./dist/index.js",

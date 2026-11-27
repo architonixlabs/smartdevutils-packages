@@ -1,5 +1,11 @@
 # @smartdevutils/browser
 
+## 1.3.0
+
+### Patch Changes
+
+- Version aligned with the other @smartdevutils packages: every package now ships under one shared version. No API change from 1.1.0.
+
 ## 1.1.0
 
 ### Minor Changes

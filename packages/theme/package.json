@@ -1,6 +1,6 @@
 {
   "name": "@smartdevutils/theme",
-  "version": "0.1.0",
+  "version": "1.3.0",
   "description": "Framework-neutral CSS for the SmartDevUtils UI packages: design tokens as CSS custom properties (light and dark) and plain class names. No Tailwind needed.",
   "type": "module",
   "main": "./dist/index.cjs",
