@@ -4,7 +4,7 @@
 
 ```bash
 # Prerequisites: Node 20+, pnpm 9+
-git clone https://github.com/ArchitonixLabs/smartdevutils-packages
+git clone https://github.com/architonixlabs/smartdevutils-packages
 cd smartdevutils-packages
 pnpm install
 ```
