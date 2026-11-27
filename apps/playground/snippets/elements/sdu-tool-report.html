@@ -1,0 +1,14 @@
+<!-- ---
+title: An analyzer that runs on a button press
+entry: elements/sdu-tool
+description: manual waits for Run; report tools show their findings as text and as JSON.
+--- -->
+<sdu-tool tool="slow-query-detector" label="Review this query" manual></sdu-tool>
+
+<script type="module">
+  import '@smartdevutils/elements/tool'
+
+  const el = document.querySelector('sdu-tool')
+  el.value = "SELECT * FROM orders WHERE note LIKE '%gift%' ORDER BY created_at"
+  el.addEventListener('sdu-output', (e) => console.log(e.detail.meta))
+</script>

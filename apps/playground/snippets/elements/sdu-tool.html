@@ -1,0 +1,20 @@
+<!-- ---
+title: A Base64 decoder that logs every run
+entry: elements/sdu-tool
+description: Settings go through the options property. setInput() sets the input and runs once.
+order: 1
+--- -->
+<sdu-tool tool="base64-encoder-decoder" mode="decode" value="eyJ1c2VyIjoiYWRhIiwicm9sZSI6ImFkbWluIn0="></sdu-tool>
+
+<script type="module">
+  import '@smartdevutils/elements/tool'
+
+  const el = document.querySelector('sdu-tool')
+  el.addEventListener('sdu-output', (e) => console.log('output:', e.detail.output))
+  el.addEventListener('sdu-error', (e) => console.warn('error:', e.detail.error))
+
+  await el.ready
+  el.options = { variant: 'urlsafe' }
+  const result = await el.setInput('aGVsbG8gZnJvbSB0aGUgcGxheWdyb3VuZA', { mode: 'decode' })
+  console.log('setInput returned:', result.output)
+</script>

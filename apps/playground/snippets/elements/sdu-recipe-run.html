@@ -1,0 +1,13 @@
+<!-- ---
+title: Show a run made headless with the recipes engine
+entry: elements/sdu-recipe-run
+--- -->
+<sdu-recipe-run label="JSON to a Base64 env var" upload></sdu-recipe-run>
+
+<script type="module">
+  import '@smartdevutils/elements/recipe-run'
+  import { getRecipe, runRecipe } from '@smartdevutils/recipes'
+
+  const run = await runRecipe(getRecipe('json-to-base64-env'), '{ "debug": true, "region": "eu-west-1" }')
+  document.querySelector('sdu-recipe-run').run = run
+</script>

@@ -1,0 +1,18 @@
+<!-- ---
+title: Run a recipe and show the run
+entry: elements/sdu-recipe, elements/sdu-recipe-run
+description: Press Run all steps. Each finished run is handed to <sdu-recipe-run> below it.
+--- -->
+<sdu-recipe recipe="decode-base64-json-param"></sdu-recipe>
+<sdu-recipe-run label="Last run"></sdu-recipe-run>
+
+<script type="module">
+  import '@smartdevutils/elements/recipe'
+  import '@smartdevutils/elements/recipe-run'
+
+  const recipe = document.querySelector('sdu-recipe')
+  recipe.addEventListener('sdu-step', (e) => console.log(`step ${e.detail.index + 1}: ${e.detail.step.name}`))
+  recipe.addEventListener('sdu-run', (e) => {
+    document.querySelector('sdu-recipe-run').run = e.detail.run
+  })
+</script>

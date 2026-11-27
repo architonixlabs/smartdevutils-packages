@@ -1,0 +1,19 @@
+<!-- ---
+title: A Mermaid diagram from text
+entry: elements/sdu-diagram
+description: The source can be the source attribute or the element's text. It redraws when the theme changes.
+--- -->
+<sdu-diagram label="Release flow">
+flowchart LR
+  A[Push] --> B{Tests pass?}
+  B -- yes --> C[Build image]
+  B -- no --> D[Fix]
+  C --> E[Deploy]
+</sdu-diagram>
+
+<script type="module">
+  import '@smartdevutils/elements/diagram'
+
+  const el = document.querySelector('sdu-diagram')
+  el.addEventListener('sdu-rendered', (e) => console.log(e.detail.ok ? 'rendered' : e.detail.error))
+</script>

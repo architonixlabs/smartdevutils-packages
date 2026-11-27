@@ -1,0 +1,11 @@
+<!-- ---
+title: A SHA-256 hash generator
+entry: elements/sdu-hash-generator
+--- -->
+<sdu-hash-generator mode="sha256" value="The quick brown fox jumps over the lazy dog"></sdu-hash-generator>
+
+<script type="module">
+  import '@smartdevutils/elements/tools'
+
+  document.querySelector('sdu-hash-generator').addEventListener('sdu-output', (e) => console.log(e.detail.mode, e.detail.output))
+</script>

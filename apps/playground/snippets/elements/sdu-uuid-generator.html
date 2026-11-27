@@ -1,0 +1,15 @@
+<!-- ---
+title: Five v7 UUIDs
+entry: elements/sdu-uuid-generator
+description: Generators take their settings through the options property.
+--- -->
+<sdu-uuid-generator label="Order ids"></sdu-uuid-generator>
+
+<script type="module">
+  import '@smartdevutils/elements/tools'
+
+  const el = document.querySelector('sdu-uuid-generator')
+  await el.ready
+  el.options = { version: 'v7', count: 5 }
+  await el.run()
+</script>

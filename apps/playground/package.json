@@ -1,0 +1,53 @@
+{
+  "name": "@smartdevutils-apps/playground",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SmartDevUtils Playground: docs and a live, sandboxed editor for every @smartdevutils package (smartdevutils.com/playground).",
+  "type": "module",
+  "scripts": {
+    "docs": "node scripts/build-docs.mjs",
+    "runtime": "vite build --config runtime.vite.config.mts",
+    "build": "node scripts/build-docs.mjs && vite build --config runtime.vite.config.mts && ng build",
+    "start": "ng serve",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@angular/common": "~22.2.0",
+    "@angular/compiler": "~22.2.0",
+    "@angular/core": "~22.2.0",
+    "@angular/platform-browser": "~22.2.0",
+    "@angular/router": "~22.2.0",
+    "@codemirror/autocomplete": "^6.18.0",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/lang-html": "^6.4.9",
+    "@codemirror/lang-javascript": "^6.2.3",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/search": "^6.5.10",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.5",
+    "@lezer/highlight": "^1.2.1",
+    "lz-string": "^1.5.0",
+    "marked": "^16.4.2",
+    "rxjs": "~7.8.0",
+    "sucrase": "^3.35.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "~22.2.0",
+    "@angular/cli": "~22.2.0",
+    "@angular/compiler-cli": "~22.2.0",
+    "@smartdevutils/browser": "workspace:*",
+    "@smartdevutils/core": "workspace:*",
+    "@smartdevutils/elements": "workspace:*",
+    "@smartdevutils/react": "workspace:*",
+    "@smartdevutils/recipes": "workspace:*",
+    "@smartdevutils/theme": "workspace:*",
+    "@types/node": "^20.17.19",
+    "jsdom": "^25.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "~6.0.2",
+    "vite": "^6.4.2",
+    "vitest": "^2.1.9"
+  }
+}

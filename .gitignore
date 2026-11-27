@@ -12,3 +12,8 @@ pnpm-debug.log*
 .env.*.local
 packages/elements/custom-elements.json
 .angular/
+
+# Playground build output (apps/playground: runtime.vite.config.mts and scripts/build-docs.mjs)
+apps/playground/public/runtime/
+apps/playground/public/sandbox.js
+apps/playground/src/assets/docs.json

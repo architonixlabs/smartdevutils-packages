@@ -1,0 +1,26 @@
+<!-- ---
+title: Restyle the elements with tokens
+entry: theme/sdu-accent, theme/sdu-radius, theme/sdu-font-size
+description: Token rules use :where(), so yours always win. They pass into the elements' shadow roots.
+--- -->
+<style>
+  .brand {
+    --sdu-accent: #0f766e;
+    --sdu-focus: #0f766e;
+    --sdu-radius: 12px;
+    --sdu-font-size: 15px;
+  }
+  [data-theme='dark'] .brand {
+    --sdu-accent: #5eead4;
+    --sdu-focus: #5eead4;
+  }
+</style>
+
+<sdu-base64 value="Default look" compact></sdu-base64>
+<div class="brand">
+  <sdu-base64 value="Teal, rounder, larger" compact></sdu-base64>
+</div>
+
+<script type="module">
+  import '@smartdevutils/elements/tools'
+</script>

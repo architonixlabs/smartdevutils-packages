@@ -1,0 +1,351 @@
+{
+  "base64-encoder-decoder": [
+    {
+      "label": "JSON auth payload",
+      "input": "{\"userId\":123,\"role\":\"admin\"}"
+    },
+    {
+      "label": "Greeting with emoji",
+      "input": "Hello, World! 🌍"
+    },
+    {
+      "label": "SQL query",
+      "input": "SELECT * FROM users WHERE name = 'Alice'"
+    }
+  ],
+  "boundary-value-analyzer": [
+    {
+      "label": "Age field, 18 to 65",
+      "input": "age integer 18..65"
+    },
+    {
+      "label": "Product price, 0.01 to 999.99",
+      "input": "price decimal 0.01..999.99"
+    },
+    {
+      "label": "Star rating 1 to 3 (narrow range)",
+      "input": "rating integer 1..3"
+    }
+  ],
+  "cicd-pipeline-builder": [
+    {
+      "label": "GitHub Actions for a Node app",
+      "input": "node github-actions install lint test build"
+    },
+    {
+      "label": "GitLab CI for a Python Docker image",
+      "input": "python gitlab-ci install lint test docker"
+    },
+    {
+      "label": "CircleCI for a Rust crate",
+      "input": "",
+      "options": {
+        "language": "rust",
+        "platform": "circleci",
+        "steps": [
+          "install",
+          "lint",
+          "test",
+          "build"
+        ]
+      }
+    }
+  ],
+  "ddl-diff": [
+    {
+      "label": "Add a column and widen another",
+      "input": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);",
+      "options": {
+        "right": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  name VARCHAR(255),\n  email TEXT\n);"
+      }
+    },
+    {
+      "label": "Retype money columns, drop a legacy one",
+      "input": "CREATE TABLE orders (\n  id INT PRIMARY KEY,\n  status VARCHAR(20),\n  total FLOAT,\n  legacy_ref VARCHAR(40),\n  created_at TIMESTAMP\n);",
+      "options": {
+        "right": "CREATE TABLE orders (\n  id INT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL,\n  total DECIMAL(12,2),\n  currency CHAR(3) DEFAULT 'USD',\n  created_at TIMESTAMP\n);"
+      }
+    },
+    {
+      "label": "Same schema, different formatting",
+      "input": "CREATE TABLE tags (id INT PRIMARY KEY, name VARCHAR(50) NOT NULL, slug VARCHAR(60));",
+      "options": {
+        "right": "CREATE TABLE tags (\n    id     INT PRIMARY KEY,\n    name   VARCHAR(50) NOT NULL,\n    slug   VARCHAR(60)\n);"
+      }
+    }
+  ],
+  "docker-tag-checker": [
+    {
+      "label": "Multi-stage Node Dockerfile",
+      "input": "FROM node:20-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\nFROM nginx:latest\nCOPY --from=build /app/dist /usr/share/nginx/html\n"
+    },
+    {
+      "label": "Compose stack with mixed tags",
+      "input": "services:\n  web:\n    image: \"ghcr.io/acme/web:2.4.1\"\n  db:\n    image: postgres:16.4@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n  cache:\n    image: redis\n  proxy:\n    image: traefik:v3.1\n"
+    },
+    {
+      "label": "Build args, --platform and registry port",
+      "input": "ARG BASE_IMAGE=python:3.12-slim\nFROM --platform=linux/amd64 ${BASE_IMAGE} AS base\nRUN pip install --no-cache-dir poetry\n\nFROM base AS test\nRUN poetry run pytest\n\nFROM localhost:5000/tools/linter\n\nFROM scratch\nCOPY --from=base /app /app\n"
+    }
+  ],
+  "gantt-generator": [
+    {
+      "label": "Website relaunch plan",
+      "input": "Discovery, 2026-03-02, 2026-03-13, Plan\nWireframes, 2026-03-16, 2026-03-27, Design\nVisual design, 2026-03-30, 2026-04-10, Design\nFrontend build, 2026-04-13, 2026-05-08, Build\nContent migration, 2026-04-27, 2026-05-15, Build\nLaunch, 2026-05-18, 2026-05-22, Release"
+    },
+    {
+      "label": "Mobile app v2 release",
+      "input": "Requirements sign-off, 2026-06-01, 2026-06-05, Planning\nAPI changes, 2026-06-08, 2026-07-03, Backend\nAuth service upgrade, 2026-06-15, 2026-06-26, Backend\niOS screens, 2026-06-22, 2026-07-24, Mobile\nAndroid screens, 2026-06-22, 2026-07-24, Mobile\nBeta testing, 2026-07-27, 2026-08-14, QA\nStore review, 2026-08-17, 2026-08-21, Release\nPublic launch, 2026-08-24, 2026-08-25, Release"
+    },
+    {
+      "label": "Unsectioned tasks with colons",
+      "input": "Kickoff: scope review, 2026-09-07, 2026-09-08\nSprint 1: data model, 2026-09-08, 2026-09-21\nSprint 2: reporting, 2026-09-22, 2026-10-05\nGo-live, 2026-10-06, 2026-10-07"
+    }
+  ],
+  "hash-generator": [
+    {
+      "label": "Common weak password",
+      "input": "password123"
+    },
+    {
+      "label": "Classic test string",
+      "input": "Hello, World!"
+    },
+    {
+      "label": "JSON payload",
+      "input": "{\"userId\":1,\"role\":\"admin\"}"
+    }
+  ],
+  "index-advisor": [
+    {
+      "label": "Filter and sort a customer list",
+      "input": "SELECT id, name, email FROM customers WHERE country = 'US' AND status = 'active' ORDER BY created_at DESC LIMIT 20;"
+    },
+    {
+      "label": "Join with filters on the driving table",
+      "input": "SELECT o.id, o.total, c.name\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nWHERE o.status = 'pending'\n  AND o.created_at > '2025-01-01';"
+    },
+    {
+      "label": "Date range plus amount threshold",
+      "input": "SELECT id, amount, paid_at FROM payments WHERE paid_at >= '2025-06-01' AND paid_at < '2025-07-01' AND amount > 100 ORDER BY paid_at;"
+    }
+  ],
+  "json-formatter": [
+    {
+      "label": "API user response",
+      "input": "{\"id\":42,\"name\":\"Jane Smith\",\"email\":\"jane@example.com\",\"roles\":[\"admin\",\"editor\"],\"createdAt\":\"2024-03-15T12:00:00Z\",\"profile\":{\"bio\":\"Full-stack engineer\",\"location\":\"Berlin\"}}"
+    },
+    {
+      "label": "Paginated list",
+      "input": "{\"page\":1,\"perPage\":10,\"total\":243,\"data\":[{\"id\":1,\"title\":\"First Post\",\"published\":true},{\"id\":2,\"title\":\"Draft\",\"published\":false}]}"
+    },
+    {
+      "label": "Nested config",
+      "input": "{\"database\":{\"host\":\"localhost\",\"port\":5432,\"name\":\"mydb\"},\"cache\":{\"ttl\":3600,\"maxKeys\":1000},\"features\":{\"darkMode\":true,\"betaUI\":false}}"
+    }
+  ],
+  "k8s-yaml-validator": [
+    {
+      "label": "Deployment, Service and Ingress",
+      "input": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: shop-web\n  namespace: shop\n  labels:\n    app: shop-web\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: shop-web\n  template:\n    metadata:\n      labels:\n        app: shop-web\n    spec:\n      securityContext:\n        runAsNonRoot: true\n      containers:\n        - name: web\n          image: ghcr.io/acme/shop-web:1.8.2\n          ports:\n            - containerPort: 8080\n          readinessProbe:\n            httpGet:\n              path: /healthz\n              port: 8080\n          resources:\n            requests:\n              cpu: 100m\n              memory: 128Mi\n            limits:\n              cpu: 500m\n              memory: 256Mi\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: shop-web\n  namespace: shop\nspec:\n  selector:\n    app: shop-web\n  ports:\n    - port: 80\n      targetPort: 8080\n---\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: shop-web\n  namespace: shop\nspec:\n  rules:\n    - host: shop.example.com\n      http:\n        paths:\n          - path: /\n            pathType: Prefix\n            backend:\n              service:\n                name: shop-web\n                port:\n                  number: 80\n"
+    },
+    {
+      "label": "Postgres StatefulSet with config refs",
+      "input": "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: postgres-config\n  namespace: data\ndata:\n  POSTGRES_DB: orders\n  PGDATA: /var/lib/postgresql/data/pgdata\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: postgres\n  namespace: data\nspec:\n  clusterIP: None\n  selector:\n    app: postgres\n  ports:\n    - port: 5432\n---\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: postgres\n  namespace: data\nspec:\n  serviceName: postgres\n  replicas: 1\n  selector:\n    matchLabels:\n      app: postgres\n  template:\n    metadata:\n      labels:\n        app: postgres\n    spec:\n      securityContext:\n        fsGroup: 999\n      containers:\n        - name: postgres\n          image: postgres:16.4\n          envFrom:\n            - configMapRef:\n                name: postgres-config\n            - secretRef:\n                name: postgres-credentials\n          ports:\n            - containerPort: 5432\n          livenessProbe:\n            exec:\n              command: [\"pg_isready\", \"-U\", \"postgres\"]\n          resources:\n            requests:\n              cpu: 250m\n              memory: 512Mi\n            limits:\n              memory: 1Gi\n          volumeMounts:\n            - name: data\n              mountPath: /var/lib/postgresql/data\n  volumeClaimTemplates:\n    - metadata:\n        name: data\n      spec:\n        accessModes: [\"ReadWriteOnce\"]\n        resources:\n          requests:\n            storage: 20Gi\n"
+    },
+    {
+      "label": "Invalid manifest: negative replicas",
+      "input": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: worker\nspec:\n  replicas: -1\n  selector:\n    matchLabels:\n      app: worker\n  template:\n    metadata:\n      labels:\n        app: worker\n    spec:\n      containers:\n        - name: worker\n          image: acme/worker:latest\n"
+    }
+  ],
+  "log-parser": [
+    {
+      "label": "Nginx access log for an API",
+      "input": "203.0.113.7 - - [27/Nov/2026:09:14:02 +0000] \"GET /api/v1/products HTTP/1.1\" 200 5123 \"-\" \"Mozilla/5.0\"\n198.51.100.23 - - [27/Nov/2026:09:14:03 +0000] \"GET /docs HTTP/1.1\" 301 169 \"-\" \"curl/8.5.0\"\n203.0.113.7 - - [27/Nov/2026:09:14:05 +0000] \"GET /api/v1/products/999 HTTP/1.1\" 404 87 \"-\" \"Mozilla/5.0\"\n192.0.2.41 - - [27/Nov/2026:09:14:06 +0000] \"POST /api/v1/orders HTTP/1.1\" 201 342 \"-\" \"okhttp/4.12.0\"\n192.0.2.41 - - [27/Nov/2026:09:14:06 +0000] \"POST /api/v1/orders HTTP/1.1\" 429 64 \"-\" \"okhttp/4.12.0\"\n"
+    },
+    {
+      "label": "JSON service logs with errors",
+      "input": "{\"time\":\"2026-11-27T09:20:11.204Z\",\"level\":\"info\",\"service\":\"orders\",\"msg\":\"Order 48213 created\",\"durationMs\":42}\n{\"time\":\"2026-11-27T09:20:12.918Z\",\"level\":\"debug\",\"service\":\"orders\",\"msg\":\"Cache refreshed for region eu-west-1\"}\n{\"time\":\"2026-11-27T09:20:14.007Z\",\"level\":\"warn\",\"service\":\"payments\",\"msg\":\"Card processor slow: 2.8s response\"}\n{\"time\":\"2026-11-27T09:20:15.512Z\",\"level\":\"error\",\"service\":\"payments\",\"msg\":\"Charge declined after 3 retries\",\"orderId\":\"48213\"}\n{\"time\":\"2026-11-27T09:20:16.090Z\",\"level\":\"info\",\"service\":\"notifications\",\"msg\":\"Receipt email queued\"}\n"
+    },
+    {
+      "label": "Journald lines filtered to warnings",
+      "input": "Nov 27 09:30:01 node-3 kubelet[812]: INFO Pod orders-7d9f6 started\nNov 27 09:30:04 node-3 kubelet[812]: WARNING Eviction threshold close: memory.available 310Mi\nNov 27 09:30:07 node-3 containerd[640]: ERROR Image pull back-off for acme/worker:2.1.0\nNov 27 09:30:09 node-3 systemd[1]: WARN Disk usage at 91% on /var/lib/containerd\nNov 27 09:30:12 node-3 kubelet[812]: DEBUG Sync loop iteration took 18ms\n",
+      "options": {
+        "level": "WARN"
+      }
+    }
+  ],
+  "migration-generator": [
+    {
+      "label": "Add columns in PostgreSQL",
+      "input": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100)\n);",
+      "options": {
+        "dialect": "postgres",
+        "right": "CREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  username VARCHAR(100),\n  email TEXT,\n  created_at TIMESTAMP DEFAULT NOW()\n);"
+      }
+    },
+    {
+      "label": "Reshape an orders table in MySQL",
+      "input": "CREATE TABLE orders (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  status VARCHAR(20),\n  total FLOAT,\n  notes TEXT\n);",
+      "options": {
+        "dialect": "mysql",
+        "right": "CREATE TABLE orders (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  status VARCHAR(50) NOT NULL DEFAULT 'new',\n  total DECIMAL(12,2),\n  shipped_at DATETIME\n);"
+      }
+    },
+    {
+      "label": "Change column types in PostgreSQL",
+      "input": "CREATE TABLE events (\n  id SERIAL PRIMARY KEY,\n  title TEXT,\n  score FLOAT\n);",
+      "options": {
+        "dialect": "postgres",
+        "right": "CREATE TABLE events (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(500),\n  score INTEGER\n);"
+      }
+    }
+  ],
+  "performance-sla-checker": [
+    {
+      "label": "Search API latency within SLA",
+      "input": "82\n95\n101\n110\n118\n124\n131\n140\n146\n152\n160\n171\n180\n188\n195\n210\n232\n265\n310\n420",
+      "options": {
+        "p50": 200,
+        "p95": 500,
+        "p99": 1000
+      }
+    },
+    {
+      "label": "Checkout endpoint with a slow tail",
+      "input": "142ms, 156ms, 161ms, 170ms, 175ms, 183ms, 190ms, 198ms, 204ms, 212ms, 221ms, 230ms, 244ms, 259ms, 280ms, 315ms, 390ms, 640ms, 910ms, 1480ms",
+      "options": {
+        "p50": 250,
+        "p95": 400,
+        "p99": 800
+      }
+    },
+    {
+      "label": "Log export with stray tokens",
+      "input": "120; 135; 128; timeout; 142; 150; n/a; 133; 161; 0.5ms; 147",
+      "options": {
+        "p50": 250,
+        "p95": 300,
+        "p99": 500
+      }
+    }
+  ],
+  "slow-query-detector": [
+    {
+      "label": "SELECT * with a leading wildcard",
+      "input": "SELECT * FROM customers WHERE email LIKE '%@example.com';"
+    },
+    {
+      "label": "Report query using NOT IN (SELECT)",
+      "input": "SELECT c.id, c.name\nFROM customers c\nWHERE c.id NOT IN (SELECT customer_id FROM orders WHERE created_at > '2025-01-01')\nORDER BY c.name;"
+    },
+    {
+      "label": "Paginated query with no issues",
+      "input": "SELECT id, title, published_at FROM posts WHERE author_id = 7 ORDER BY published_at DESC LIMIT 20;"
+    }
+  ],
+  "sprint-velocity": [
+    {
+      "label": "Steady team, six sprints",
+      "input": "24, 22, 25, 23, 26, 24"
+    },
+    {
+      "label": "New team ramping up, 12 sprints",
+      "input": "8, 11, 13, 15, 18, 20, 21, 23, 22, 25, 24, 26"
+    },
+    {
+      "label": "Velocity drop after a reorg",
+      "input": "30\n31.5\n29\n18\n17.5"
+    }
+  ],
+  "sql-create-table": [
+    {
+      "label": "Users table in PostgreSQL",
+      "input": "users\nid SERIAL pk\nemail VARCHAR(255) not null\ndisplay_name VARCHAR(100)\ncreated_at TIMESTAMP not null default CURRENT_TIMESTAMP",
+      "options": {
+        "dialect": "postgres"
+      }
+    },
+    {
+      "label": "Order lines in MySQL with money",
+      "input": "order_items\nid BIGINT pk\norder_id BIGINT not null\nsku VARCHAR(40) not null\nquantity INT not null default 1\nunit_price DECIMAL(10, 2) not null",
+      "options": {
+        "dialect": "mysql"
+      }
+    }
+  ],
+  "system-prompt-analyzer": [
+    {
+      "label": "Bare one-line assistant prompt",
+      "input": "You are a helpful assistant."
+    },
+    {
+      "label": "Travel booking support agent",
+      "input": "You are a support agent for a travel booking site. Your job is to help users change flights, cancel hotel bookings and understand fees. Be friendly and concise. Only answer questions about bookings made on this site; do not give visa or legal advice."
+    },
+    {
+      "label": "SQL tutor with JSON output",
+      "input": "You are a patient SQL tutor for beginners using PostgreSQL.\nYour job is to explain queries the student pastes and suggest one improvement.\n\nTone: friendly and encouraging, never condescending.\nScope: only discuss SQL and database design. Do not write application code.\nConstraints: never run or claim to run queries. Refuse requests to access real databases or anything harmful or illegal.\nFormat: respond in JSON with the keys \"explanation\", \"improvement\" and \"example\", where \"example\" is a corrected query."
+    }
+  ],
+  "training-data-formatter": [
+    {
+      "label": "HR policy Q&A for OpenAI",
+      "input": "[\n  {\n    \"input\": \"How many vacation days do new employees get?\",\n    \"output\": \"Full-time employees start with 20 days of paid vacation per year, accrued monthly.\"\n  },\n  {\n    \"input\": \"Can I carry unused vacation into next year?\",\n    \"output\": \"Yes, up to 5 unused days carry over and must be used by the end of March.\"\n  },\n  {\n    \"input\": \"Who approves remote work requests?\",\n    \"output\": \"Your direct manager approves remote work requests through the HR portal.\"\n  }\n]",
+      "options": {
+        "format": "openai"
+      }
+    },
+    {
+      "label": "Code review replies for Anthropic",
+      "input": "[\n  {\n    \"input\": \"Review: const items = data.map(x => x).filter(x => x != null);\",\n    \"output\": \"The map(x => x) is a no-op and can be removed. Use !== null && !== undefined, or filter(Boolean) if falsy values are not valid items.\"\n  },\n  {\n    \"input\": \"Review: for (let i = 0; i <= arr.length; i++) { total += arr[i]; }\",\n    \"output\": \"Off-by-one: i <= arr.length reads one past the end and adds undefined, giving NaN. Use i < arr.length, or arr.reduce((a, b) => a + b, 0).\"\n  }\n]",
+      "options": {
+        "format": "anthropic"
+      }
+    },
+    {
+      "label": "Multi-line and Unicode answers",
+      "input": "[\n  {\n    \"input\": \"Translate \\\"good morning\\\" into Japanese and Hindi.\",\n    \"output\": \"Japanese: おはようございます (ohayō gozaimasu)\\nHindi: सुप्रभात (suprabhāt)\"\n  },\n  {\n    \"input\": \"Give me a haiku about code review.\",\n    \"output\": \"Small diff, sharp eyes —\\na missing semicolon\\nsaves the release night.\"\n  }\n]",
+      "options": {
+        "format": "openai"
+      }
+    }
+  ],
+  "url-encoder-decoder": [
+    {
+      "label": "Search query with spaces",
+      "input": "https://example.com/search?q=hello world&lang=en"
+    },
+    {
+      "label": "Username with space in path",
+      "input": "https://api.example.com/users/john doe/profile"
+    },
+    {
+      "label": "Nested redirect URL",
+      "input": "callback=https://myapp.com/auth?token=abc&redirect=/home"
+    }
+  ],
+  "uuid-generator": [
+    {
+      "label": "Generate 5 UUIDs",
+      "input": "5",
+      "options": {
+        "count": 5
+      }
+    },
+    {
+      "label": "Single UUID",
+      "input": "1",
+      "options": {
+        "count": 1
+      }
+    },
+    {
+      "label": "Batch of 10",
+      "input": "10",
+      "options": {
+        "count": 10
+      }
+    }
+  ]
+}

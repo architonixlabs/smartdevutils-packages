@@ -1,0 +1,24 @@
+<!-- ---
+title: The .sdu-* classes on your own markup
+entry: theme/sdu-bg, theme/sdu-surface, theme/sdu-border
+description: base.css styles plain markup with the same tokens, light and dark. The playground loads styles.css for the preview.
+--- -->
+<div class="sdu-root">
+  <div class="sdu-header">
+    <h2 class="sdu-title">Deploy settings</h2>
+  </div>
+  <div class="sdu-tabs" role="tablist">
+    <button class="sdu-tab" role="tab" aria-selected="true">Staging</button>
+    <button class="sdu-tab" role="tab" aria-selected="false">Production</button>
+  </div>
+  <label class="sdu-field">
+    <span class="sdu-label">Image tag</span>
+    <input class="sdu-input" value="acme/web:1.3.0" />
+  </label>
+  <div class="sdu-actions">
+    <button class="sdu-btn sdu-btn-primary">Deploy</button>
+    <button class="sdu-btn">Cancel</button>
+  </div>
+  <pre class="sdu-output">Ready to deploy acme/web:1.3.0 to staging.</pre>
+  <p class="sdu-error" role="alert">Production needs an approved change request.</p>
+</div>
