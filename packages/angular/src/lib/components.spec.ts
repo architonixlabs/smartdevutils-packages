@@ -71,8 +71,11 @@ describe('SduToolComponent', () => {
     box.checked = true
     box.dispatchEvent(new Event('change'))
     q<HTMLButtonElement>(f, '.sdu-btn-primary')!.click()
-    await settle(f)
-    expect(f.componentInstance.results.at(-1)?.output).toMatch(/^BA7816BF/)
+    // The runner loads on demand; on a cold or busy machine that can take longer than settle()'s few ticks.
+    await vi.waitFor(async () => {
+      await settle(f)
+      expect(f.componentInstance.results.at(-1)?.output).toMatch(/^BA7816BF/)
+    }, { timeout: 5000 })
   })
 
   it('shows an error with role=alert', async () => {
